@@ -26,28 +26,33 @@ class CarController extends BaseController
         array_push($all_sub_ids,$brand_id);
 
         $brand_color_name = $request->input('brand_color_name','');
+        $cars = Car::join('brands','brands.id','=','cars.type')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year');
         if($brand_color_name)
         {
             $all_sub_ids = BrandColor::where('type',1)
                 ->where('name',$brand_color_name)
                 ->whereIn('brand_id',$all_sub_ids)
                 ->pluck('brand_id');
+            $cars = Car::join('brands','brands.id','=','cars.type')
+                ->join('brand_colors','brand_colors.brand_id','=','brands.id')
+                ->select('brands.id as brand_id','brands.name as brand_name','brand_colors.displaying as image','cars.id','cars.name','cars.price','cars.year')
+                ->where('brand_colors.name',$brand_color_name);
         }
 
-        $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year')
-            ->when($all_sub_ids, function ($query) use ($all_sub_ids) {
-                return $query->whereIn('type', $all_sub_ids);
+
+        $cars = $cars->when($all_sub_ids, function ($query) use ($all_sub_ids) {
+                return $query->whereIn('cars.type', $all_sub_ids);
             })
             ->when($min_price, function ($query) use ($min_price) {
-                return $query->where('price','>=', $min_price);
+                return $query->where('cars.price','>=', $min_price);
             })
             ->when($max_price, function ($query) use ($max_price) {
-                return $query->where('price','<=', $max_price);
+                return $query->where('cars.price','<=', $max_price);
             })
             ->when($order_by, function ($query) use ($order_by) {
                 $order_by_arr = explode('-',$order_by);
-                return $query->orderBy($order_by_arr[0],$order_by_arr[1]);
+                return $query->orderBy('cars.'.$order_by_arr[0],$order_by_arr[1]);
             })
             ->orderBy('id','desc')
             ->paginate(20);
