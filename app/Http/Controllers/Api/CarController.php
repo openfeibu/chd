@@ -56,7 +56,7 @@ class CarController extends BaseController
         foreach ($cars_data as $key => $car)
         {
             //$cars_data[$key]['configure'] = json_decode($car['configure']);
-            $cars_data[$key]['name'] = $car['brand_name'].' '.$car['name'];
+            //$cars_data[$key]['name'] = $car['brand_name'].' '.$car['name'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
         }
         return response()->json([
@@ -74,7 +74,7 @@ class CarController extends BaseController
             ->where('cars.id',$id)
             ->first();
 
-        $car->name = $car->brand_name.' '.$car->name;
+       // $car->name = $car->brand_name.' '.$car->name;
         $car->configure = json_decode($car->configure);
         $car->image = handle_image_url($car->image);
 
