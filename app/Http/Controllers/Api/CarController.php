@@ -82,6 +82,10 @@ class CarController extends BaseController
        // $car->name = $car->brand_name.' '.$car->name;
         $car->configure = json_decode($car->configure);
         $car->image = handle_image_url($car->image);
+        $car->images = BrandColor::where('brand_id',$car->brand_id)->pluck('displaying');
+        $car = $car->toArray();
+
+        $car['images'] = handle_images($car['images']);
 
         return response()->json([
             'code' => '200',
