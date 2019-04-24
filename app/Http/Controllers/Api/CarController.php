@@ -32,7 +32,7 @@ class CarController extends BaseController
         }
 
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.*')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.name','cars.price','cars.id')
             ->when($all_sub_ids, function ($query) use ($all_sub_ids) {
                 return $query->whereIn('type', $all_sub_ids);
             })->orderBy('id','desc')->paginate(20);
@@ -40,7 +40,7 @@ class CarController extends BaseController
         $cars_data = $cars->toArray()['data'];
         foreach ($cars_data as $key => $car)
         {
-            $cars_data[$key]['configure'] = json_decode($car['configure']);
+            //$cars_data[$key]['configure'] = json_decode($car['configure']);
             $cars_data[$key]['name'] = $car['brand_name'].' '.$car['name'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
         }
