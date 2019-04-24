@@ -32,7 +32,7 @@ class CarController extends BaseController
         }
 
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.name','cars.price','cars.id')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year')
             ->when($all_sub_ids, function ($query) use ($all_sub_ids) {
                 return $query->whereIn('type', $all_sub_ids);
             })->orderBy('id','desc')->paginate(20);
