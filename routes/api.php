@@ -23,6 +23,7 @@ $api->version('v1', function ($api) {
     $api->get('/','App\Http\Controllers\Api\HomeController@index');
     $api->get('/brand','App\Http\Controllers\Api\BrandController@getBrands');
     $api->get('/car','App\Http\Controllers\Api\CarController@getCars');
+    $api->get('/car/{id}','App\Http\Controllers\Api\CarController@getCar');
     $api->get('/brand-color','App\Http\Controllers\Api\BrandController@getBrandColors');
     /*
     $api->post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
