@@ -80,7 +80,7 @@ class CarController extends BaseController
             ->first();
 
        // $car->name = $car->brand_name.' '.$car->name;
-        $car->configure = json_decode($car->configure);
+        $car->configure = json_decode($car->configure,true);
         $car->image = handle_image_url($car->image);
         $car->images = BrandColor::where('brand_id',$car->brand_id)->where('displaying','>','')->pluck('displaying');
         $car = $car->toArray();
