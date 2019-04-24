@@ -46,7 +46,7 @@ class CarController extends BaseController
                 return $query->where('price','<=', $max_price);
             })
             ->when($order_by, function ($query) use ($order_by) {
-                $order_by_arr = explode('_',$order_by);
+                $order_by_arr = explode('-',$order_by);
                 return $query->orderBy($order_by_arr[0],$order_by_arr[1]);
             })
             ->orderBy('id','desc')
