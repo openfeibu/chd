@@ -18,6 +18,7 @@ class CarController extends BaseController
     }
     public function getCars(Request $request)
     {
+        $search_key = $request->input('search_key','');
         $min_price = $request->input('min_price','');
         $max_price = $request->input('max_price','');
         $order_by = $request->input('order_by','');
@@ -40,7 +41,6 @@ class CarController extends BaseController
                 ->where('brand_colors.name',$brand_color_name);
         }
 
-
         $cars = $cars->when($all_sub_ids, function ($query) use ($all_sub_ids) {
                 return $query->whereIn('cars.type', $all_sub_ids);
             })
@@ -50,10 +50,16 @@ class CarController extends BaseController
             ->when($max_price, function ($query) use ($max_price) {
                 return $query->where('cars.price','<=', $max_price);
             })
+            ->when($search_key, function ($query) use ($search_key) {
+                return $query->where(function ($query) use ($search_key) {
+                    $query->where('cars.name','like','%'.$search_key.'%')->orWhere('brands.name','like','%'.$search_key.'%');
+                });
+            })
             ->when($order_by, function ($query) use ($order_by) {
                 $order_by_arr = explode('-',$order_by);
                 return $query->orderBy('cars.'.$order_by_arr[0],$order_by_arr[1]);
             })
+
             ->orderBy('id','desc')
             ->paginate(20);
 
@@ -90,6 +96,43 @@ class CarController extends BaseController
         return response()->json([
             'code' => '200',
             'data' => $car
+        ]);
+    }
+    public function getRecommendCars(Request $request)
+    {
+        $limit = $request->input('limit',12);
+        $cars = Car::join('brands','brands.id','=','cars.type')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year')
+            ->where('is_recommend',1)
+            ->orderBy('id','desc')
+            ->limit($limit)
+            ->get();
+        $cars_data = $cars->toArray();
+        foreach ($cars_data as $key => $car)
+        {
+            $cars_data[$key]['image'] = handle_image_url($car['image']);
+        }
+        return response()->json([
+            'code' => '200',
+            'data' => $cars_data
+        ]);
+    }
+    public function getNewCars(Request $request)
+    {
+        $limit = $request->input('limit',5);
+        $cars = Car::join('brands','brands.id','=','cars.type')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year')
+            ->orderBy('id','desc')
+            ->limit($limit)
+            ->get();
+        $cars_data = $cars->toArray();
+        foreach ($cars_data as $key => $car)
+        {
+            $cars_data[$key]['image'] = handle_image_url($car['image']);
+        }
+        return response()->json([
+            'code' => '200',
+            'data' => $cars_data
         ]);
     }
 }
