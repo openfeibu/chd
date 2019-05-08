@@ -41,4 +41,31 @@ class BrandController extends BaseController
             'data' => $brand_colors,
         ]);
     }
+    public function getBrandInteriorColors(Request $request)
+    {
+        $brand_id = $request->input('brand_id');
+        $all_sub_ids = app(Brand::class)->getSubIds($brand_id);
+        array_push($all_sub_ids,$brand_id);
+
+        $brand_shape_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',1)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get();
+
+        $brand_interior_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',2)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get();
+
+        $brand_all_colors = [];
+        foreach ($brand_shape_colors as $key => $brand_shape_color)
+        {
+            foreach ($brand_interior_colors as $key => $brand_interior_color)
+            {
+                $brand_all_colors[] = [
+                    'name' => $brand_shape_color['name'] . '/' . $brand_interior_color['name'],
+                ];
+            }
+        }
+
+        return response()->json([
+            'code' => '200',
+            'data' => $brand_all_colors,
+        ]);
+
+    }
 }

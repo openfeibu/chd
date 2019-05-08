@@ -57,6 +57,12 @@ class Handler extends ExceptionHandler
     private function handle($request,$exception)
     {
         switch ($exception) {
+            case ($exception instanceof \App\Exceptions\OutputServerMessageException):
+                $resposeJson = [
+                    'code' => 400,
+                    'message' => $exception->getMessage(),
+                ];
+                break;
             case ($exception instanceof \App\Exceptions\Roles\PermissionDeniedException):
                 $resposeJson = [
                     'code' => 403,
@@ -65,13 +71,8 @@ class Handler extends ExceptionHandler
                 ];
                 break;
             case ($exception instanceof \Illuminate\Session\TokenMismatchException):
-//                return Redirect::back()
-//                    ->withErrors(['页面Token 失效，请重新进入'])
-//                    ->withMessage('页面Token 失效，请重新进入')
-//                    ->withStatus('error')
-//                    ->withCode('403');
                 $resposeJson = [
-                    'code' => 403,
+                    'code' => 419,
                     'url' => '',
                     'message' => '页面Token 失效，请重新进入',
                 ];

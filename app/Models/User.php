@@ -20,5 +20,8 @@ class User extends AuthModel
      */
     protected $config = 'model.user.user.model';
 
-
+    public function findUserByToken($token)
+    {
+        return self::select('nickname','avatar_url','token','phone')->where('token', $token)->first();
+    }
 }

@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
+    $api->get('/weapp/code','App\Http\Controllers\Api\Auth\WeAppUserLoginController@code');
+    $api->post('/weapp/login','App\Http\Controllers\Api\Auth\WeAppUserLoginController@login');
     $api->get('/','App\Http\Controllers\Api\HomeController@index');
     $api->get('/brand','App\Http\Controllers\Api\BrandController@getBrands');
     $api->get('/car','App\Http\Controllers\Api\CarController@getCars');
@@ -27,6 +29,8 @@ $api->version('v1', function ($api) {
     $api->get('/recommend_car','App\Http\Controllers\Api\CarController@getRecommendCars');
     $api->get('/new_car','App\Http\Controllers\Api\CarController@getNewCars');
     $api->get('/brand-color','App\Http\Controllers\Api\BrandController@getBrandColors');
+    $api->get('/brand-interior-color','App\Http\Controllers\Api\BrandController@getBrandInteriorColors');
+
     /*
     $api->post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
     $api->post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');
