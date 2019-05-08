@@ -74,7 +74,7 @@ return [
             //'slugs'         => [],
             'dates'         => ['created_at', 'updated_at'],
             'appends'       => [],
-            'fillable'      => [ 'name', 'email', 'password','remember_token','created_at','updated_at'],
+            'fillable'      => [ 'name', 'email', 'password','remember_token','nickname','open_id','avatar_url','session_key','token','city','phone','created_at','updated_at'],
             'translate'     => [],
 
             'upload_folder' => 'user/user',
