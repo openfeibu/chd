@@ -41,7 +41,9 @@ class WeAppUserLoginController extends BaseController
         $encryptedData = $request->input('encryptedData');
         $iv = $request->input('iv');
 
-        $sessionKey = $this->getSessionKey($code);
+        $data = $this->getSessionKey($code);
+        $sessionKey = $data['session_key'];
+
         $token = $this->generatetoken($sessionKey);
 
         $WXBizDataCryptService = new WXBizDataCryptService(config('weapp.appid'),$sessionKey);
