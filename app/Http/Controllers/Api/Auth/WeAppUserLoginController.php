@@ -122,8 +122,15 @@ class WeAppUserLoginController extends BaseController
     public function storeUser($user_info, $token, $session_key)
     {
         $open_id = $user_info->openId;
-        $res = User::where('open_id', $open_id)->get();
-        if (empty($res->toArray())) {
+        $res = User::where('open_id', $open_id)->first();
+        if (isset($res) && $res) {
+            User::where('open_id', $open_id)->update([
+                'avatar_url' => $user_info->avatarUrl ?? $res->avatarUrl,
+                'nickname' => $user_info->nickName ?? $res->nickName,
+                'token' => $token,
+                'session_key' => $session_key
+            ]);
+        } else {
             User::create([
                 'open_id' => $user_info->openId,
                 'avatar_url' => $user_info->avatarUrl,
@@ -131,13 +138,6 @@ class WeAppUserLoginController extends BaseController
                 'session_key' => $session_key,
                 'token' => $token,
                 'city' => $user_info->city,
-            ]);
-        } else {
-            User::where('open_id', $open_id)->update([
-                'avatar_url' => $user_info->avatarUrl ?? '',
-                'nickname' => $user_info->nickName ?? '',
-                'token' => $token,
-                'session_key' => $session_key
             ]);
         }
     }
