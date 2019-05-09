@@ -24,8 +24,8 @@ class WeAppUserLoginController extends BaseController
         $token = $this->generatetoken($we_data['session_key']);
         $user_info = (object)Array();
         $user_info->openId = $we_data['openid'];
-        $user_info->avatar_url = '';
-        $user_info->nickname = '';
+        $user_info->avatarUrl = '';
+        $user_info->nickName = '';
         $this->storeUser($user_info, $token, $we_data['session_key']);
         $user = app(User::class)->findUserByToken($token);
 
