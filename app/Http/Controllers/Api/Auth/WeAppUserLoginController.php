@@ -17,7 +17,23 @@ class WeAppUserLoginController extends BaseController
     {
         parent::__construct();
     }
+    public function code(Request $request)
+    {
+        $code = $request->input('code');
+        $we_data =  $this->getSessionKey($code);
+        $token = $this->generatetoken($we_data['session_key']);
+        $user_info = (object)Array();
+        $user_info->openId = $we_data['openid'];
+        $user_info->avatar_url = '';
+        $user_info->nickname = '';
+        $this->storeUser($user_info, $token, $we_data['session_key']);
+        $user = app(User::class)->findUserByToken($token);
 
+        return response()->json([
+            'code' => '200',
+            'data' => $user,
+        ]);
+    }
     public function login(Request $request)
     {
         $code = $request->input('code');
@@ -60,7 +76,10 @@ class WeAppUserLoginController extends BaseController
         $appId = config("weapp.appid");
         $appSecret = config("weapp.secret");
         list($session_key, $openid) = array_values($this->getSessionKeyDirectly($appId, $appSecret, $code));
-        return $session_key;
+        return [
+            'session_key' => $session_key,
+            'openid' => $openid
+        ];
     }
     /**
      * 直接请求微信获取 session key
@@ -112,6 +131,8 @@ class WeAppUserLoginController extends BaseController
             ]);
         } else {
             User::where('open_id', $open_id)->update([
+                'avatar_url' => $user_info->avatarUrl ?? '',
+                'nickname' => $user_info->nickName ?? '',
                 'token' => $token,
                 'session_key' => $session_key
             ]);
