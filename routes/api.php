@@ -30,7 +30,7 @@ $api->version('v1', function ($api) {
     $api->get('/new_car','App\Http\Controllers\Api\CarController@getNewCars');
     $api->get('/brand-color','App\Http\Controllers\Api\BrandController@getBrandColors');
     $api->get('/brand-interior-color','App\Http\Controllers\Api\BrandController@getBrandInteriorColors');
-
+    $api->get('/user_info','App\Http\Controllers\Api\UserController@getUser');
     /*
     $api->post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
     $api->post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');
