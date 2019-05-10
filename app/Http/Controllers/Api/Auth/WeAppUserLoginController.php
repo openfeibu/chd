@@ -129,7 +129,7 @@ class WeAppUserLoginController extends BaseController
                 'nickname' => $user_info->nickName ?? $res->nickName,
                 'token' => $token,
                 'session_key' => $session_key,
-                'city' => $user_info->city ?? $res->nickName,
+                'city' => $user_info->city ?? $res->city,
             ]);
         } else {
             User::create([
