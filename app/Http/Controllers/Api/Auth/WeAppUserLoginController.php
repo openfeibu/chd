@@ -128,7 +128,8 @@ class WeAppUserLoginController extends BaseController
                 'avatar_url' => $user_info->avatarUrl ?? $res->avatarUrl,
                 'nickname' => $user_info->nickName ?? $res->nickName,
                 'token' => $token,
-                'session_key' => $session_key
+                'session_key' => $session_key,
+                'city' => $user_info->city ?? $res->nickName,
             ]);
         } else {
             User::create([
