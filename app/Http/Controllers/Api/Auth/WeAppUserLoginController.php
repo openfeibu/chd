@@ -125,11 +125,11 @@ class WeAppUserLoginController extends BaseController
         $res = User::where('open_id', $open_id)->first();
         if (isset($res) && $res) {
             User::where('open_id', $open_id)->update([
-                'avatar_url' => isset($user_info->avatarUrl) && $user_info->avatarUrl ? $user_info->avatarUrl : $res->avatarUrl,
-                'nickname' => isset($user_info->nickName) && $user_info->nickName ? $user_info->avatarUrl : $res->nickName,
+                'avatar_url' => $user_info->avatarUrl ?? $res->avatar_url,
+                'nickname' => $user_info->nickName ?? $res->nickname,
                 'token' => $token,
                 'session_key' => $session_key,
-                'city' => isset($user_info->city) && $user_info->city ? $user_info->city : $res->nickName,
+                'city' => $user_info->city ?? $res->city,
             ]);
         } else {
             User::create([
