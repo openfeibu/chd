@@ -23,12 +23,13 @@ class CarController extends BaseController
         $max_price = $request->input('max_price','');
         $order_by = $request->input('order_by','');
         $brand_id = $request->input('brand_id','');
+        $category = $request->input('category','');
         $all_sub_ids = app(Brand::class)->getSubIds($brand_id);
         array_push($all_sub_ids,$brand_id);
 
         $brand_color_name = $request->input('brand_color_name','');
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year');
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.selling_price');
         if($brand_color_name)
         {
             $all_sub_ids = BrandColor::where('type',1)
@@ -37,7 +38,7 @@ class CarController extends BaseController
                 ->pluck('brand_id');
             $cars = Car::join('brands','brands.id','=','cars.type')
                 ->join('brand_colors','brand_colors.brand_id','=','brands.id')
-                ->select('brands.id as brand_id','brands.name as brand_name','brand_colors.displaying as image','cars.id','cars.name','cars.price','cars.year')
+                ->select('brands.id as brand_id','brands.name as brand_name','brand_colors.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.selling_price')
                 ->where('brand_colors.name',$brand_color_name);
         }
 
@@ -55,11 +56,15 @@ class CarController extends BaseController
                     $query->where('cars.name','like','%'.$search_key.'%')->orWhere('brands.name','like','%'.$search_key.'%');
                 });
             })
+            ->when($category, function ($query) use ($category) {
+                return $query->where(function ($query) use ($category) {
+                    $query->whereRaw("find_in_set('".$category."',cars.category)");
+                });
+            })
             ->when($order_by, function ($query) use ($order_by) {
                 $order_by_arr = explode('-',$order_by);
                 return $query->orderBy('cars.'.$order_by_arr[0],$order_by_arr[1]);
             })
-
             ->orderBy('id','desc')
             ->paginate(20);
 
@@ -76,12 +81,11 @@ class CarController extends BaseController
             'data' => $cars_data,
         ]);
 
-
     }
     public function getCar(Request $request, $id)
     {
         $car = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.configure')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.configure','cars.selling_price','cars.commercial_insurance_price','cars.production_date','cars.emission_standard','cars.note')
             ->where('cars.id',$id)
             ->first();
 
@@ -89,6 +93,7 @@ class CarController extends BaseController
         $car->configure = array_values(json_decode($car->configure,true));
         $car->image = handle_image_url($car->image);
         $car->images = BrandColor::where('brand_id',$car->brand_id)->where('displaying','>','')->pluck('displaying');
+        $car->total_price = $car->selling_price * 10000 + $car->commercial_insurance_price;
         $car = $car->toArray();
 
         $car['images'] = handle_images($car['images']);
