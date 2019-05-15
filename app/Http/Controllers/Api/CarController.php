@@ -100,7 +100,7 @@ class CarController extends BaseController
         $car = $car->toArray();
 
         $car['images'] = handle_images($car['images']);
-        $car['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->get();
+        $car['financial'] = CarFinancialProduct::select('car_financial_products.down','car_financial_products.ratio','car_financial_products.month_installment','car_financial_products.periods','financial_products.name','financial_products.content')->join('financial_products','financial_products.id','=','car_financial_products.financial_product_id')->where('car_financial_products.car_id',$car['id'])->orderBy('car_financial_products.id','asc')->get();
 
         return response()->json([
             'code' => '200',
@@ -111,7 +111,7 @@ class CarController extends BaseController
     {
         $limit = $request->input('limit',12);
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.category')
             ->where('is_recommend',1)
             ->orderBy('id','desc')
             ->limit($limit)
@@ -130,7 +130,7 @@ class CarController extends BaseController
     {
         $limit = $request->input('limit',5);
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.category')
             ->orderBy('id','desc')
             ->limit($limit)
             ->get();

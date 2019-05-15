@@ -22,7 +22,7 @@ class Car extends BaseModel
 
     public $timestamps = false;
 
-    protected $appends = ['is_instalment','is_rent','is_financial'];
+    protected $appends = ['is_instalment','is_rent','is_financial','is_full'];
 
     public function getIsInstalmentAttribute()
     {
@@ -34,6 +34,11 @@ class Car extends BaseModel
     {
         $category = $this->attributes['category'];
         return strpos($category,'rent') ? true : false;
+    }
+    public function getIsFullAttribute()
+    {
+        $category = $this->attributes['category'];
+        return strpos($category,'full') ? true : false;
     }
     public function getIsFinancialAttribute()
     {
