@@ -100,7 +100,7 @@ class CarController extends BaseController
         $car = $car->toArray();
 
         $car['images'] = handle_images($car['images']);
-        $car['financial'] = CarFinancialProduct::select('car_financial_products.down','car_financial_products.ratio','car_financial_products.month_installment','car_financial_products.periods','financial_products.name','financial_products.content')->join('financial_products','financial_products.id','=','car_financial_products.financial_product_id')->where('car_financial_products.car_id',$car['id'])->orderBy('car_financial_products.id','asc')->get();
+        $car['financial'] = CarFinancialProduct::select('car_financial_products.id as car_financial_product_id','car_financial_products.down','car_financial_products.ratio','car_financial_products.month_installment','car_financial_products.periods','financial_products.name','financial_products.content')->join('financial_products','financial_products.id','=','car_financial_products.financial_product_id')->where('car_financial_products.car_id',$car['id'])->orderBy('car_financial_products.id','asc')->get();
 
         return response()->json([
             'code' => '200',
