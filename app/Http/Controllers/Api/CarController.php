@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Models\Brand;
 use App\Models\BrandColor;
 use App\Models\Car;
+use App\Models\CarFinancialProduct;
 use Log;
 
 class CarController extends BaseController
@@ -29,7 +30,7 @@ class CarController extends BaseController
 
         $brand_color_name = $request->input('brand_color_name','');
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.selling_price');
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.selling_price','cars.category');
         if($brand_color_name)
         {
             $all_sub_ids = BrandColor::where('type',1)
@@ -38,7 +39,7 @@ class CarController extends BaseController
                 ->pluck('brand_id');
             $cars = Car::join('brands','brands.id','=','cars.type')
                 ->join('brand_colors','brand_colors.brand_id','=','brands.id')
-                ->select('brands.id as brand_id','brands.name as brand_name','brand_colors.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.selling_price')
+                ->select('brands.id as brand_id','brands.name as brand_name','brand_colors.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.selling_price','cars.category')
                 ->where('brand_colors.name',$brand_color_name);
         }
 
@@ -74,7 +75,9 @@ class CarController extends BaseController
             //$cars_data[$key]['configure'] = json_decode($car['configure']);
             //$cars_data[$key]['name'] = $car['brand_name'].' '.$car['name'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
+            $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
         }
+
         return response()->json([
             'code' => '200',
             'total' => $cars->total(),
@@ -85,7 +88,7 @@ class CarController extends BaseController
     public function getCar(Request $request, $id)
     {
         $car = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.configure','cars.selling_price','cars.commercial_insurance_price','cars.production_date','cars.emission_standard','cars.note')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.configure','cars.selling_price','cars.commercial_insurance_price','cars.production_date','cars.emission_standard','cars.note','cars.category')
             ->where('cars.id',$id)
             ->first();
 
@@ -97,6 +100,7 @@ class CarController extends BaseController
         $car = $car->toArray();
 
         $car['images'] = handle_images($car['images']);
+        $car['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->get();
 
         return response()->json([
             'code' => '200',
