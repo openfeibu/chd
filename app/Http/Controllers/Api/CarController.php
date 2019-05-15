@@ -138,6 +138,7 @@ class CarController extends BaseController
         foreach ($cars_data as $key => $car)
         {
             $cars_data[$key]['image'] = handle_image_url($car['image']);
+            $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
         }
         return response()->json([
             'code' => '200',
