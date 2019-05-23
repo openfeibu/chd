@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\CarFinancialProduct;
 use App\Models\FinancialProduct;
 use App\Models\FinancialCategory;
+use App\Models\OrderFinancial;
 use Log,Input;
 
 class OrderController extends BaseController
@@ -136,6 +137,35 @@ class OrderController extends BaseController
             'transfer_voucher_image' => $transfer_voucher_image,
             'status' => $order->is_financial ? 'un_financial_data' : 'finish',
         ]);
+        return response()->json([
+            'code' => '200',
+            'message' => '提交成功',
+        ]);
+    }
+    public function submitOrderFinancial(Request $request)
+    {
+        $order_id = $request->order_id;
+        $attributes = $request->all();
+        $attributes['user_id'] = $this->user->id;
+        $order = Order::where('id',$order_id)->first();
+        if(!$order->is_financial)
+        {
+            return response()->json([
+                'code' => '400',
+                'message' => '该订单为全款购车，无需填写分期资料',
+            ]);
+        }
+        $order_financial = OrderFinancial::where('order_id',$order_id)->first();
+        if($order_financial)
+        {
+            unset($attributes['token']);
+            OrderFinancial::where('order_id',$order_id)->update($attributes);
+        }else{
+            OrderFinancial::create($attributes);
+            Order::where('id',$order_id)->update([
+                'status' => 'finish',
+            ]);
+        }
         return response()->json([
             'code' => '200',
             'message' => '提交成功',

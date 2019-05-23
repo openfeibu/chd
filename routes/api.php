@@ -37,6 +37,7 @@ $api->version('v1', function ($api) {
     $api->post('/order/submit_transfer_voucher','App\Http\Controllers\Api\OrderController@submitTransferVoucher');
     $api->get('/order/get_order','App\Http\Controllers\Api\OrderController@getOrder');
     $api->get('/order/get_orders','App\Http\Controllers\Api\OrderController@getOrders');
+    $api->post('/order/submit_order_financial','App\Http\Controllers\Api\OrderController@submitOrderFinancial');
     /*
     $api->post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
     $api->post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');

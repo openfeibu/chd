@@ -35,4 +35,23 @@ return [
             'order'  => 'like'
         ],
     ],
+    'order_financial'     => [
+        'model'        => 'App\Models\OrderFinancial',
+        'table'        => 'order_financials',
+        'primaryKey'   => 'id',
+        'hidden'       => [],
+        'visible'      => [],
+        'guarded'      => ['*'],
+        'dates'        => ['deleted_at'],
+        'fillable'     => ['name','user_id','order_id','id_card','phone','id_card_image_a','id_card_image_b','credit_authfile_image','credit_authfile_signature_image','bank_card_image','driving_licence_image','other_images'],
+        'upload_folder' => '/page/page',
+        'encrypt'      => ['id'],
+        'revision'     => ['name'],
+        'perPage'      => '20',
+        'search'        => [
+            'name'  => 'like',
+            'url'  => 'like',
+            'order'  => 'like'
+        ],
+    ],
 ];
