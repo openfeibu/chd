@@ -72,7 +72,6 @@ class OrderController extends BaseController
         }else{
             $attributes['deposit'] = 20000;
         }
-        $attributes['commercial_insurance_price'] = $attributes['is_commercial_insurance'] ? $car['commercial_insurance_price'] : 0;
 
         if($attributes['car_financial_product_id'])
         {
@@ -86,6 +85,9 @@ class OrderController extends BaseController
             $attributes['is_financial'] = 1;
             $attributes['financial_category_id'] = $financial_product['category_id'];
             $attributes['financial_category_name'] = FinancialCategory::where('id',$financial_product['category_id'])->value('name') ;
+            $attributes['commercial_insurance_price'] = $car['commercial_insurance_price'];
+        }else{
+            $attributes['commercial_insurance_price'] = $attributes['is_commercial_insurance'] ? $car['commercial_insurance_price'] : 0;
         }
         $order = Order::create($attributes);
         $order = Order::where('id',$order->id)->first();
