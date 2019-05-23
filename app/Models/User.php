@@ -7,7 +7,9 @@ use App\Models\Auth as AuthModel;
 use App\Traits\Database\Slugger;
 use App\Traits\Database\DateFormatter;
 use App\Traits\Filer\Filer;
+use Illuminate\Support\Facades\Request as RequestFacades;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class User extends AuthModel
 {
@@ -22,6 +24,16 @@ class User extends AuthModel
 
     public function findUserByToken($token)
     {
-        return self::select('nickname','avatar_url','city','token','phone','open_id')->where('token', $token)->first();
+        return self::select('id','nickname','avatar_url','city','token','phone','open_id')->where('token', $token)->first();
+    }
+    public static function getUser()
+    {
+         $token = RequestFacades::input('token','');
+         $user = self::select('id','nickname','avatar_url','city','token','phone','open_id')->where('token', $token)->first();
+        if(!$user)
+        {
+            throw new UnauthorizedHttpException('jwt-auth', '未登录');
+        }
+        return $user;
     }
 }

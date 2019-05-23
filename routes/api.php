@@ -31,6 +31,12 @@ $api->version('v1', function ($api) {
     $api->get('/brand-color','App\Http\Controllers\Api\BrandController@getBrandColors');
     $api->get('/brand-interior-color','App\Http\Controllers\Api\BrandController@getBrandInteriorColors');
     $api->get('/user_info','App\Http\Controllers\Api\UserController@getUser');
+    $api->post('/order/submit_order','App\Http\Controllers\Api\OrderController@submitOrder');
+    $api->post('/order/pay','App\Http\Controllers\Api\OrderController@pay');
+    $api->post('/order/upload_image','App\Http\Controllers\Api\OrderController@uploadImage');
+    $api->post('/order/submit_transfer_voucher','App\Http\Controllers\Api\OrderController@submitTransferVoucher');
+    $api->get('/order/get_order','App\Http\Controllers\Api\OrderController@getOrder');
+    $api->get('/order/get_orders','App\Http\Controllers\Api\OrderController@getOrders');
     /*
     $api->post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
     $api->post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');

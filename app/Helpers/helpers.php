@@ -707,3 +707,79 @@ if (!function_exists('drop_blank')) {
         return trim($str); //返回字符串
     }
 }
+
+if (!function_exists('isVaildImage')) {
+    function isVaildImage($files)
+    {
+        $error = '';
+
+        foreach($files as $key => $file)
+        {
+            $name = $file->getClientOriginalName();
+            if(!$file->isValid())
+            {
+                $error.= $name.$file->getErrorMessage().';';
+            }
+            if(!in_array( strtolower($file->extension()),config('common.img_type'))){
+                $error.= $name."类型错误;";
+            }
+            if($file->getClientSize() > config('common.img_size')){
+                $img_size = config('common.img_size')/(1024*1024);
+                $error.= $name.'超过'.$img_size.'M';
+            }
+        }
+        if($error)
+        {
+            throw new \App\Exceptions\OutputServerMessageException($error);
+        }
+    }
+}
+if (!function_exists('image_png_size_add')) {
+    function image_png_size_add($imgsrc, $imgdst)
+    {
+        list($width, $height, $type) = getimagesize($imgsrc);
+        $ratio = $width > 1000 ? 1000 / $width : 1;
+        $new_width = $ratio * $width * 0.9;
+        $new_height = $ratio * $height * 0.9;
+
+        switch ($type) {
+            case 1:
+                $giftype = check_gifcartoon($imgsrc);
+                if ($giftype) {
+                    $image_wp = imagecreatetruecolor($new_width, $new_height);
+                    $image = imagecreatefromgif($imgsrc);
+                    imagecopyresampled($image_wp, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+                    imagegif($image_wp, $imgdst, 75);
+                    imagedestroy($image_wp);
+                }
+                break;
+            case 2:
+                $image_wp = imagecreatetruecolor($new_width, $new_height);
+                $image = imagecreatefromjpeg($imgsrc);
+                imagecopyresampled($image_wp, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+                imagejpeg($image_wp, $imgdst, 75);
+                imagedestroy($image_wp);
+                break;
+            case 3:
+                $image_wp = imagecreatetruecolor($new_width, $new_height);
+                $image = imagecreatefrompng($imgsrc);
+                imagesavealpha($image, true);
+                imagealphablending($image_wp, false);
+                imagesavealpha($image_wp, true);
+                imagecopyresampled($image_wp, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+                imagepng($image_wp, $imgdst);
+                imagedestroy($image_wp);
+                break;
+        }
+
+    }
+}
+if (!function_exists('check_gifcartoon')) {
+    function check_gifcartoon($image_file)
+    {
+        $fp = fopen($image_file, 'rb');
+        $image_head = fread($fp, 1024);
+        fclose($fp);
+        return true;
+    }
+}

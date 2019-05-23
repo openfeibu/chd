@@ -17,7 +17,7 @@ return [
 
     'financial_product'     => [
         'model'        => 'App\Models\FinancialProduct',
-        'table'        => 'financial_product',
+        'table'        => 'financial_products',
         'primaryKey'   => 'id',
         'hidden'       => [],
         'visible'      => [],
@@ -37,7 +37,7 @@ return [
     ],
     'financial_category'     => [
         'model'        => 'App\Models\FinancialCategory',
-        'table'        => 'financial_products',
+        'table'        => 'financial_categories',
         'primaryKey'   => 'id',
         'hidden'       => [],
         'visible'      => [],
