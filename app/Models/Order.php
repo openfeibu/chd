@@ -8,6 +8,8 @@ use App\Traits\Database\Slugger;
 use App\Traits\Filer\Filer;
 use App\Traits\Hashids\Hashids;
 use App\Traits\Trans\Translatable;
+use App\Models\Car;
+use App\Models\BrandColor;
 
 class Order extends BaseModel
 {
