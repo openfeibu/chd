@@ -27,7 +27,7 @@ class OrderController extends BaseController
     public function getOrders(Request $request)
     {
         $type = $request->input('type','doing');
-        $orders = Order::select('car_name','deposit','selling_price','car_financial_product_id','transfer_voucher_image','commercial_insurance_price','financial_product_name','is_financial','financial_category_id','financial_category_name','order_financial_id','status')->where('user_id',$this->user->id);
+        $orders = Order::select('id','car_name','deposit','selling_price','car_financial_product_id','transfer_voucher_image','commercial_insurance_price','financial_product_name','is_financial','financial_category_id','financial_category_name','order_financial_id','status')->where('user_id',$this->user->id);
         if($type == 'doing')
         {
             $orders->whereIn('status',['unpaid_bank','un_financial_data']);
