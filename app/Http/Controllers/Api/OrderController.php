@@ -61,7 +61,7 @@ class OrderController extends BaseController
 
         $attributes['car_name'] = $car['name'];
         $attributes['car_image'] = BrandColor::where('brand_id',$car->brand_id)->where('displaying','>','')->value('displaying');
-        var_dump($car);exit;
+        
         $attributes['selling_price'] = $car['selling_price'];
 
         if($attributes['selling_price'] <= 10)
