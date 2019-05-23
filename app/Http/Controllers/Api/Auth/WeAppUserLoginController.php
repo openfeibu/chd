@@ -46,7 +46,7 @@ class WeAppUserLoginController extends BaseController
 
         $token = $this->generatetoken($sessionKey);
 
-        $WXBizDataCryptService = new WXBizDataCryptService(config('weapp.appid'),$sessionKey);
+        $WXBizDataCryptService = new WXBizDataCryptService($sessionKey);
 
         $errCode = $WXBizDataCryptService->decryptData($encryptedData, $iv, $data );
 
