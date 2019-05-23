@@ -34,7 +34,7 @@ class HomeController extends BaseController
         return response()->json([
             'code' => '200',
             'data' => [
-                'icbc_file' => [
+                'icbc_auth_file' => [
                     'name' => $icbc_auth_file_name,
                     'image' =>  $icbc_auth_file,
                 ],
