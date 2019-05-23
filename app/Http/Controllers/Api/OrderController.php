@@ -47,7 +47,7 @@ class OrderController extends BaseController
     {
         $order_id = $request->order_id;
         $order = Order::where('id',$order_id)->first();
-
+        $order->car_image = handle_image_url($order->car_image);
         return response()->json([
             'code' => '200',
             'data' => $order,
@@ -60,8 +60,8 @@ class OrderController extends BaseController
         $car = Car::where('id',$attributes['car_id'])->first();
 
         $attributes['car_name'] = $car['name'];
-        $attributes['car_image'] = BrandColor::where('brand_id',$car->brand_id)->where('displaying','>','')->value('displaying');
-        
+        $attributes['car_image'] = BrandColor::where('brand_id',$car->type)->where('displaying','>','')->value('displaying');
+
         $attributes['selling_price'] = $car['selling_price'];
 
         if($attributes['selling_price'] <= 10)
