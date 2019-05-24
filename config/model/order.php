@@ -43,7 +43,7 @@ return [
         'visible'      => [],
         'guarded'      => ['*'],
         'dates'        => ['deleted_at'],
-        'fillable'     => ['name','user_id','order_id','id_card','phone','id_card_image_a','id_card_image_b','credit_authfile_image','credit_authfile_signature_image','bank_card_image','driving_licence_image','other_images'],
+        'fillable'     => ['name','user_id','order_id','id_card','phone','marital_status','spouse_id_card_image_a','spouse_id_card_image_b','marriage_license','id_card_image_a','id_card_image_b','credit_authfile_image','credit_authfile_signature_image','bank_card_image','driving_licence_image','other_images'],
         'upload_folder' => '/page/page',
         'encrypt'      => ['id'],
         'revision'     => ['name'],
