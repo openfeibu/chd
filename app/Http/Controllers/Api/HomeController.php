@@ -31,14 +31,15 @@ class HomeController extends BaseController
     {
         $icbc_auth_file = url('image/original/'.setting('icbc_auth_file'));
         $icbc_auth_file_name = setting('icbc_auth_file','title');
+        $data = [
+            '0' => [
+                'name' =>  $icbc_auth_file_name,
+                'image' =>  $icbc_auth_file,
+            ],
+        ];
         return response()->json([
             'code' => '200',
-            'data' => [
-                'icbc_auth_file' => [
-                    'name' => $icbc_auth_file_name,
-                    'image' =>  $icbc_auth_file,
-                ],
-            ],
+            'data' => $data,
         ]);
     }
 }
