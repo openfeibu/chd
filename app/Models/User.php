@@ -24,12 +24,12 @@ class User extends AuthModel
 
     public function findUserByToken($token)
     {
-        return self::select('id','nickname','avatar_url','city','token','phone','open_id')->where('token', $token)->first();
+        return self::select('id','nickname','avatar_url','city','token','phone','open_id','session_key')->where('token', $token)->first();
     }
     public static function getUser()
     {
          $token = RequestFacades::input('token','');
-         $user = self::select('id','nickname','avatar_url','city','token','phone','open_id')->where('token', $token)->first();
+         $user = self::select('id','nickname','avatar_url','city','token','phone','open_id','session_key')->where('token', $token)->first();
         if(!$user)
         {
             throw new UnauthorizedHttpException('jwt-auth', '未登录');

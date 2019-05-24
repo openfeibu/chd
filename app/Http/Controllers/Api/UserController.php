@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Models\Banner;
 use App\Models\User;
 use App\Services\WXBizDataCryptService;
+use App\Services\AmapService;
 use Log;
 
 class UserController extends BaseController
@@ -55,5 +56,15 @@ class UserController extends BaseController
             'code' => '200',
             'message' => '提交成功',
         ]);
+    }
+    public function submitLocation(Request $request)
+    {
+        $longitude = $request->input('longitude','');
+        $latitude =  $request->input('latitude','');
+        $amap_service = new AmapService();
+
+        $res = $amap_service->geocode_regeo($longitude.','.$latitude);
+
+        print_r($res);exit;
     }
 }
