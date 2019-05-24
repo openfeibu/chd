@@ -55,6 +55,7 @@ class UserController extends BaseController
         return response()->json([
             'code' => '200',
             'message' => '提交成功',
+            'data' => $phone
         ]);
     }
     public function submitLocation(Request $request)
