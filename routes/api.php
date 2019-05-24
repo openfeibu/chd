@@ -22,6 +22,7 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', function ($api) {
     $api->post('/weapp/code','App\Http\Controllers\Api\Auth\WeAppUserLoginController@code');
     $api->post('/weapp/login','App\Http\Controllers\Api\Auth\WeAppUserLoginController@login');
+    $api->post('/submit_phone','App\Http\Controllers\Api\UserController@submitPhone');
     $api->get('/','App\Http\Controllers\Api\HomeController@index');
     $api->get('/brand','App\Http\Controllers\Api\BrandController@getBrands');
     $api->get('/car','App\Http\Controllers\Api\CarController@getCars');
