@@ -64,18 +64,7 @@ class OrderController extends BaseController
 
         $attributes['selling_price'] = $car['selling_price'];
 
-        if($attributes['selling_price'] <= 10)
-        {
-            $attributes['deposit'] = 2000;
-        }else if($attributes['selling_price']>10 && $attributes['selling_price']<=20)
-        {
-            $attributes['deposit'] = 3000;
-        }else if($attributes['selling_price']>20 && $attributes['selling_price']<=30)
-        {
-            $attributes['deposit'] = 5000;
-        }else{
-            $attributes['deposit'] = 20000;
-        }
+        $attributes['deposit'] = $car['deposit'];
 
         if($attributes['car_financial_product_id'])
         {

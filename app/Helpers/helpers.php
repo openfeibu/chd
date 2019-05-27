@@ -783,3 +783,19 @@ if (!function_exists('check_gifcartoon')) {
         return true;
     }
 }
+function deposit($selling_price)
+{
+    if($selling_price <= 10)
+    {
+        $deposit = 2000;
+    }else if($selling_price>10 && $selling_price<=20)
+    {
+        $deposit = 3000;
+    }else if($selling_price>20 && $selling_price<=30)
+    {
+        $deposit = 5000;
+    }else{
+        $deposit = 20000;
+    }
+    return $deposit;
+}
