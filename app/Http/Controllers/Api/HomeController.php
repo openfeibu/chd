@@ -42,4 +42,11 @@ class HomeController extends BaseController
             'data' => $data,
         ]);
     }
+    public function getWechatCheck(Request $request)
+    {
+        return response()->json([
+            'code' => '200',
+            'data' => setting('wechat_check'),
+        ]);
+    }
 }

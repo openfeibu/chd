@@ -43,6 +43,7 @@ $api->version('v1', function ($api) {
     $api->post('/order/submit_order_financial','App\Http\Controllers\Api\OrderController@submitOrderFinancial');
     $api->get('/get_bank','App\Http\Controllers\Api\HomeController@getBank');
     $api->get('/get_auth_file','App\Http\Controllers\Api\HomeController@getAuthFile');
+    $api->get('/is_wechat_check','App\Http\Controllers\Api\HomeController@getWechatCheck');
     /*
     $api->post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
     $api->post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');
