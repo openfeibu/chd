@@ -49,4 +49,11 @@ class HomeController extends BaseController
             'data' => setting('wechat_check'),
         ]);
     }
+    public function getInsuranceRebateText(Request $request)
+    {
+        return response()->json([
+            'code' => '200',
+            'data' => setting('insurance_rebate_text'),
+        ]);
+    }
 }
