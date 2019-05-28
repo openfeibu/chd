@@ -48,6 +48,7 @@ class OrderController extends BaseController
         $order_id = $request->order_id;
         $order = Order::where('id',$order_id)->first();
         $order->car_image = handle_image_url($order->car_image);
+
         return response()->json([
             'code' => '200',
             'data' => $order,
