@@ -48,4 +48,8 @@ class Car extends BaseModel
     {
         return deposit($this->attributes['selling_price']);
     }
+    public function brand()
+    {
+        return $this->belongsTo('App\Models\Brand','type');
+    }
 }

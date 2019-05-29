@@ -2,7 +2,7 @@
     <div class="layui-card fb-minNav">
         <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
             <a href="{{ guard_url('home') }}">主页</a><span lay-separator="">/</span>
-            <a><cite>{{ trans('order.name') }}管理</cite></a>
+            <a><cite>{{ trans('car.name') }}管理</cite></a>
         </div>
     </div>
     <div class="main_full">
@@ -26,8 +26,8 @@
 </script>
 
 <script>
-    var main_url = "{{guard_url('order')}}";
-    var delete_all_url = "{{guard_url('order/destroyAll')}}";
+    var main_url = "{{guard_url('car')}}";
+    var delete_all_url = "{{guard_url('car/destroyAll')}}";
     layui.use(['jquery','element','table'], function(){
         var table = layui.table;
         var form = layui.form;
@@ -38,14 +38,14 @@
             ,cols: [[
                 {checkbox: true, fixed: true}
                 ,{field:'id',title:'ID', width:80, sort: true}
-                ,{field:'car_name',title:"{{ trans('car.name') }}"}
-                ,{field:'color',title:"{{ trans('order.label.color') }}"}
-                ,{field:'company',title:"{{ trans('order.label.company') }}"}
-                ,{field:'linkman',title:"{{ trans('order.label.linkman') }}"}
-                ,{field:'phone',title:"{{ trans('order.label.phone') }}"}
-                ,{field:'city',title:"{{ trans('order.label.city') }}"}
-                ,{field:'buy_type',title:"{{ trans('order.label.buy_type') }}"}
-                ,{field:'status_desc',title:"{{ trans('order.label.status_desc') }}"}
+                ,{field:'car_name',title:"{{ trans('car.label.car_name') }}"}
+                ,{field:'color',title:"{{ trans('car.label.color') }}"}
+                ,{field:'company',title:"{{ trans('car.label.company') }}"}
+                ,{field:'linkman',title:"{{ trans('car.label.linkman') }}"}
+                ,{field:'phone',title:"{{ trans('car.label.phone') }}"}
+                ,{field:'city',title:"{{ trans('car.label.city') }}"}
+                ,{field:'buy_type',title:"{{ trans('car.label.buy_type') }}"}
+                ,{field:'status_desc',title:"{{ trans('car.label.status_desc') }}"}
                 ,{field:'score',title:'操作', width:120, align: 'right',toolbar:'#barDemo'}
             ]]
             ,id: 'fb-table'

@@ -154,9 +154,10 @@ class OrderController extends BaseController
             unset($attributes['token']);
             OrderFinancial::where('order_id',$order_id)->update($attributes);
         }else{
-            OrderFinancial::create($attributes);
+            $order_financial = OrderFinancial::create($attributes);
             Order::where('id',$order_id)->update([
                 'status' => 'finish',
+                'order_financial_id' => $order_financial->order_financial_id
             ]);
         }
         return response()->json([

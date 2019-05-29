@@ -11,36 +11,73 @@
             <div class="fb-main-table">
                 <form class="layui-form" action="{{guard_url('order/'.$order->id)}}" method="post" method="post" lay-filter="fb-form">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">{{ trans('order.label.name') }}</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="name" autocomplete="off" placeholder="请输入{{ trans('order.label.name') }}" class="layui-input" value="{{ $order->name }}">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">{{ trans('order.label.linkman') }}</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="linkman" autocomplete="off" placeholder="请输入{{ trans('order.label.linkman') }}" class="layui-input" value="{{ $order->linkman }}">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">{{ trans('order.label.phone') }}</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="phone" autocomplete="off" placeholder="请输入{{ trans('order.label.phone') }}" class="layui-input" value="{{ $order->phone }}">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">{{ trans('order.label.wechat') }}</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="wechat" autocomplete="off" placeholder="请输入{{ trans('order.label.wechat') }}" class="layui-input" value="{{ $order->wechat }}">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('car.name') }}：</label>
                         <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                            <p class="input-p">{{ $order->car_name }}</p>
                         </div>
                     </div>
-                    {!!Form::token()!!}
-                    <input type="hidden" name="_method" value="PUT">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.color') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->color }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.company') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->company }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.linkman') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->linkman }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.phone') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->phone }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.city') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->city }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.buy_type') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->buy_type }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.status') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->status_desc }}</p>
+                        </div>
+                    </div>
+                    @if()
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.name') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->car_name }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.name') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->car_name }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.name') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->car_name }}</p>
+                        </div>
+                    </div>
+
                 </form>
             </div>
 

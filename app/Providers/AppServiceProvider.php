@@ -62,6 +62,14 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Eloquent\NavCategoryRepository::class
         );
         $this->app->bind(
+            'App\Repositories\Eloquent\CarRepositoryInterface',
+            \App\Repositories\Eloquent\CarRepository::class
+        );
+        $this->app->bind(
+            'App\Repositories\Eloquent\BrandRepositoryInterface',
+            \App\Repositories\Eloquent\BrandRepository::class
+        );
+        $this->app->bind(
             'App\Repositories\Eloquent\OrderRepositoryInterface',
             \App\Repositories\Eloquent\OrderRepository::class
         );
