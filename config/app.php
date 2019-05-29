@@ -54,9 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'image_url' => 'http://www.youchehui.com',
+    'ych_image_url' => 'http://www.youchehui.com',
 
-    'ych_image_url' => env('APP_URL', 'http://localhost'),
+    'image_url' => env('APP_URL', 'http://localhost'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
