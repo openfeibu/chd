@@ -508,7 +508,13 @@ if (!function_exists('handle_image_url')) {
     {
         $host = $host ? $host : config('app.image_url') . '/';
         if (!empty($image_url) && strpos($image_url, 'http') === false) {
-            $image_url = $host . $image_url;
+            if(strpos($image_url, '/data/upload') === false)
+            {
+                $image_url = $host . $image_url;
+            }else{
+                $image_url = config('app.ych_image_url'). '/' . $image_url;
+            }
+
         }
         return $image_url;
     }

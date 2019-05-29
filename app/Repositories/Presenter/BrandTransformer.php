@@ -10,7 +10,9 @@ class BrandTransformer extends TransformerAbstract
     {
         return [
             'id' => $brand->id,
-
+            'name' => $brand->name,
+            'parent_id' => $brand->parent_id,
+            ''
         ];
     }
 }
