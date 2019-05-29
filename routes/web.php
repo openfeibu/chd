@@ -27,6 +27,9 @@ Route::group([
     Route::resource('banner', 'BannerResourceController');
     Route::post('/banner/destroyAll', 'BannerResourceController@destroyAll');
 
+    Route::resource('order', 'OrderResourceController');
+    Route::post('/order/destroyAll', 'OrderResourceController@destroyAll')->name('order.destroy_all');
+
     Route::resource('news', 'NewsResourceController');
     Route::post('/news/destroyAll', 'NewsResourceController@destroyAll')->name('news.destroy_all');
     Route::post('/news/updateRecommend', 'NewsResourceController@updateRecommend')->name('news.update_recommend');

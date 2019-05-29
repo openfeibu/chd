@@ -22,7 +22,7 @@ class Order extends BaseModel
      */
     protected $config = 'model.order.order';
 
-    protected $appends = ['status_desc','transfer_voucher_image_url','total_price'];       // 表里没有的字段
+    protected $appends = ['status_desc','transfer_voucher_image_url','total_price','buy_type'];       // 表里没有的字段
 
     public function getStatusDescAttribute()
     {
@@ -36,5 +36,13 @@ class Order extends BaseModel
     public function getTotalPriceAttribute()
     {
         return $this->attributes['selling_price'] * 10000 +  $this->attributes['commercial_insurance_price'];
+    }
+    public function getBuyTypeAttribute()
+    {
+        return $this->attributes['is_financial'] ? $this->attributes['financial_category_name'] : '全款购车';
+    }
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
     }
 }

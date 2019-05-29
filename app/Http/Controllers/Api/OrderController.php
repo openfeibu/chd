@@ -58,9 +58,9 @@ class OrderController extends BaseController
     {
         $attributes = $request->all();
         $attributes['user_id'] = $this->user->id;
-        $car = Car::where('id',$attributes['car_id'])->first();
+        $car = Car::join('brands','brands.id','=','cars.type')->where('cars.id',$attributes['car_id'])->select('brands.name as brand_name','cars.*')->first();
 
-        $attributes['car_name'] = $car['name'];
+        $attributes['car_name'] = $car['brand_name'].' '.$car['name'];
         $attributes['car_image'] = BrandColor::where('brand_id',$car->type)->where('displaying','>','')->value('displaying');
 
         $attributes['selling_price'] = $car['selling_price'];
