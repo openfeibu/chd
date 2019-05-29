@@ -157,7 +157,7 @@ class OrderController extends BaseController
             $order_financial = OrderFinancial::create($attributes);
             Order::where('id',$order_id)->update([
                 'status' => 'finish',
-                'order_financial_id' => $order_financial->order_financial_id
+                'order_financial_id' => $order_financial->id
             ]);
         }
         return response()->json([

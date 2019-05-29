@@ -58,25 +58,45 @@
                             <p class="input-p">{{ $order->status_desc }}</p>
                         </div>
                     </div>
-                    @if()
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">{{ trans('order.label.name') }}：</label>
-                        <div class="layui-input-block">
-                            <p class="input-p">{{ $order->car_name }}</p>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">{{ trans('order.label.name') }}：</label>
-                        <div class="layui-input-block">
-                            <p class="input-p">{{ $order->car_name }}</p>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">{{ trans('order.label.name') }}：</label>
-                        <div class="layui-input-block">
-                            <p class="input-p">{{ $order->car_name }}</p>
-                        </div>
-                    </div>
+
+                    <?php $order_financial = $order->order_financial;?>
+                    @if($order_financial)
+                        <fieldset class="layui-elem-field">
+                            <legend>金融资料</legend>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.name') }}：</label>
+                                <div class="layui-input-block">
+                                    <p class="input-p">{{ $order_financial->name }}</p>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.id_card') }}：</label>
+                                <div class="layui-input-block">
+                                    <p class="input-p">{{ $order_financial->id_card }}</p>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.phone') }}：</label>
+                                <div class="layui-input-block">
+                                    <p class="input-p">{{ $order_financial->phone }}</p>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.marital_status') }}：</label>
+                                <div class="layui-input-block">
+                                    <p class="input-p">{{ trans('order_financial.marital_status.'.$order_financial->marital_status) }}</p>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.id_card_image_a') }}：</label>
+                                <div class="layui-input-block">
+                                    <img src="{{ url('image/original'.$order_financial->id_card_image_a) }}">
+                                </div>
+                            </div>
+                        </fieldset>
+                    @endif
+
 
                 </form>
             </div>

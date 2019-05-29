@@ -45,4 +45,8 @@ class Order extends BaseModel
     {
         return $this->belongsTo('App\Models\User');
     }
+    public function order_financial()
+    {
+        return $this->hasOne('App\Models\OrderFinancial');
+    }
 }
