@@ -61,7 +61,7 @@
 
                     <?php $order_financial = $order->order_financial;?>
                     @if($order_financial)
-                        <fieldset class="layui-elem-field">
+                        <fieldset class="layui-elem-field" id="photos">
                             <legend>金融资料</legend>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">{{ trans('order_financial.label.name') }}：</label>
@@ -87,13 +87,76 @@
                                     <p class="input-p">{{ trans('order_financial.marital_status.'.$order_financial->marital_status) }}</p>
                                 </div>
                             </div>
-
+                            @if(in_array($order_financial->marital_status,['married_children','married_no_children']))
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">{{ trans('order_financial.label.spouse_id_card_image_a') }}：</label>
+                                    <div class="layui-input-block">
+                                        <img src="{{ url('image/original'.$order_financial->spouse_id_card_image_a) }}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">{{ trans('order_financial.label.spouse_id_card_image_b') }}：</label>
+                                    <div class="layui-input-block">
+                                        <img src="{{ url('image/original'.$order_financial->spouse_id_card_image_b) }}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">{{ trans('order_financial.label.marriage_license') }}：</label>
+                                    <div class="layui-input-block">
+                                        <img src="{{ url('image/original'.$order_financial->marriage_license) }}">
+                                    </div>
+                                </div>
+                            @endif
                             <div class="layui-form-item">
                                 <label class="layui-form-label">{{ trans('order_financial.label.id_card_image_a') }}：</label>
                                 <div class="layui-input-block">
                                     <img src="{{ url('image/original'.$order_financial->id_card_image_a) }}">
                                 </div>
                             </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.id_card_image_b') }}：</label>
+                                <div class="layui-input-block">
+                                    <img src="{{ url('image/original'.$order_financial->id_card_image_b) }}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.credit_authfile_image') }}：</label>
+                                <div class="layui-input-block">
+                                    <img src="{{ url('image/original'.$order_financial->credit_authfile_image) }}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.credit_authfile_signature_image') }}：</label>
+                                <div class="layui-input-block">
+                                    <img src="{{ url('image/original'.$order_financial->credit_authfile_signature_image) }}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.bank_card_image') }}：</label>
+                                <div class="layui-input-block">
+                                    <img src="{{ url('image/original'.$order_financial->bank_card_image) }}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{ trans('order_financial.label.driving_licence_image') }}：</label>
+                                <div class="layui-input-block">
+                                    <img src="{{ url('image/original'.$order_financial->driving_licence_image) }}">
+                                </div>
+                            </div>
+                            @if($order_financial->other_images)
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">{{ trans('order_financial.label.other_images') }}：</label>
+                                    <div class="layui-input-block">
+                                        @foreach(explode(',',$order_financial->other_images) as $image)
+                                        <ul>
+                                            <li>
+                                                <img src="{{ url('image/original'.$image) }}">
+                                            </li>
+                                        </ul>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
                         </fieldset>
                     @endif
 
@@ -105,3 +168,13 @@
     </div>
 </div>
 {!! Theme::asset()->container('ueditor')->scripts() !!}
+<script>
+    var main_url = "{{guard_url('order')}}";
+    var delete_all_url = "{{guard_url('order/destroyAll')}}";
+    layui.use(['jquery','element','table'], function() {
+        layer.photos({
+            photos: '#photos'
+            , anim: 5
+        });
+    });
+</script>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Banner;
@@ -14,6 +13,19 @@ class HomeController extends BaseController
     public function __construct()
     {
         parent::__construct();
+    }
+    public function getBanners()
+    {
+        $banners = Banner::orderBy('order','asc')->orderBy('id','asc')->get();
+        foreach ($banners as $key => $banner)
+        {
+            $banner->image = url('image/original/'.$banner->image);
+        }
+        return response()->json([
+            'code' => '200',
+            'data' => $banners,
+        ]);
+
     }
     public function getBank(Request $request)
     {

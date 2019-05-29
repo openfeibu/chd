@@ -64,6 +64,8 @@ body{background: #f5f5f5;}
 .tabel-btn{margin-right: 20px;}
 .fb-minNav{height: 50px;padding: 0 15px;line-height: 50px}
 .fb-main-table .layui-form-item .layui-input-inline{width: 300px;}
+.fb-main-table .layui-form-item img {width:300px;}
+.fb-main-table .layui-form-item ul li {float: left; margin-left: 10px;}
 .layui-btn a{color: #fff;display: block;}
 .main_full .layui-form-onswitch{border-color: #FF5722;
     background-color: #FF5722}
