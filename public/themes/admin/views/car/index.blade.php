@@ -12,6 +12,10 @@
                     <button class="layui-btn layui-btn-warm "><a href="{{ guard_url('car/create') }}">添加{{ trans('car.name') }}</a></button>
                     <button class="layui-btn layui-btn-primary " data-type="del" data-events="del">删除</button>
                 </div>
+                <div class="layui-inline">
+                    <input class="layui-input search_key" name="search_name" id="demoReload" placeholder="车名" autocomplete="off">
+                </div>
+                <button class="layui-btn" data-type="reload">搜索</button>
             </div>
 
             <table id="fb-table" class="layui-table"  lay-filter="fb-table">
