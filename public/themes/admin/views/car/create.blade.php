@@ -10,6 +10,19 @@
             {!! Theme::partial('message') !!}
             <div class="fb-main-table">
                 <form class="layui-form" action="{{guard_url('car')}}" method="post" method="post" lay-filter="fb-form">
+                    
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('brand.name') }}</label>
+
+                        <div class="layui-input-inline">
+                            <select name="type">
+                            @foreach($brands as $key => $brand)
+                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.name') }}</label>
                         <div class="layui-input-inline">
@@ -56,6 +69,20 @@
                         <label class="layui-form-label">{{ trans('car.label.note') }}</label>
                         <div class="layui-input-inline">
                             <input type="text" name="note" autocomplete="off" placeholder="请输入{{ trans('car.label.note') }}" class="layui-input" value="{{ $car->note }}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片</label>
+                        {!! $car->files('image')
+                        ->url($car->getUploadUrl('image'))
+                        ->uploader()!!}
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分类</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="category[full]" title="全款购车" checked>
+                            <input type="checkbox" name="category[instalment]" title="金融分期" >
+                            <input type="checkbox" name="category[rent]" title="以租代售">
                         </div>
                     </div>
                     <div class="layui-form-item">

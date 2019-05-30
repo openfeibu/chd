@@ -11,6 +11,18 @@
             <div class="fb-main-table">
                 <form class="layui-form" action="{{guard_url('car/'.$car->id)}}" method="post" method="post" lay-filter="fb-form">
                     <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('brand.name') }}</label>
+
+                        <div class="layui-input-inline">
+                            <select name="type">
+                                @foreach($brands as $key => $brand)
+                                    <option value="{{ $brand->id }}" @if($brand->id == $car->type) selected @endif)>{{ $brand->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.name') }}</label>
                         <div class="layui-input-inline">
                             <input type="text" name="name" autocomplete="off" placeholder="请输入{{ trans('car.label.name') }}" class="layui-input" value="{{ $car->name }}">
@@ -57,6 +69,12 @@
                         <div class="layui-input-inline">
                             <input type="text" name="note" autocomplete="off" placeholder="请输入{{ trans('car.label.note') }}" class="layui-input" value="{{ $car->note }}">
                         </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片</label>
+                        {!! $car->files('image')
+                        ->url($car->getUploadUrl('image'))
+                        ->uploader()!!}
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-input-block">

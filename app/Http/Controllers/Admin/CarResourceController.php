@@ -58,10 +58,10 @@ class CarResourceController extends BaseController
     public function create(Request $request)
     {
         $car = $this->repository->newInstance([]);
-
+        $brands = Brand::orderBy('id','asc')->get();
         return $this->response->title(trans('car.name'))
             ->view('car.create')
-            ->data(compact('car'))
+            ->data(compact('car','brands'))
             ->output();
     }
     public function store(Request $request)

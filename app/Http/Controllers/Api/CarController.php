@@ -30,7 +30,7 @@ class CarController extends BaseController
 
         $brand_color_name = $request->input('brand_color_name','');
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.selling_price','cars.category');
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.year','cars.image','cars.selling_price','cars.category');
         if($brand_color_name)
         {
             $all_sub_ids = BrandColor::where('type',1)
@@ -74,6 +74,7 @@ class CarController extends BaseController
         {
             //$cars_data[$key]['configure'] = json_decode($car['configure']);
             //$cars_data[$key]['name'] = $car['brand_name'].' '.$car['name'];
+            $car['image'] = $car['image'] ?? $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
         }
@@ -88,10 +89,10 @@ class CarController extends BaseController
     public function getCar(Request $request, $id)
     {
         $car = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.configure','cars.selling_price','cars.commercial_insurance_price','cars.production_date','cars.emission_standard','cars.note','cars.category')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.year','cars.image','cars.configure','cars.selling_price','cars.commercial_insurance_price','cars.production_date','cars.emission_standard','cars.note','cars.category')
             ->where('cars.id',$id)
             ->first();
-
+        $car->image = $car->image ?? $car->displaying;
        // $car->name = $car->brand_name.' '.$car->name;
         $car->configure = $car->configure ? array_values(json_decode($car->configure,true)) : [];
         $car->image = handle_image_url($car->image);
