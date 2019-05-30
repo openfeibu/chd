@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\ResourceController as BaseController;
+use App\Models\FinancialProduct;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\Car;
@@ -59,9 +60,12 @@ class CarResourceController extends BaseController
     {
         $car = $this->repository->newInstance([]);
         $brands = Brand::orderBy('id','asc')->get();
+        $instalment_financial_products = FinancialProduct::where('category_id',1)->get();
+        $rent_financial_products = FinancialProduct::where('category_id',2)->get();
+
         return $this->response->title(trans('car.name'))
             ->view('car.create')
-            ->data(compact('car','brands'))
+            ->data(compact('car','brands','instalment_financial_products','rent_financial_products'))
             ->output();
     }
     public function store(Request $request)

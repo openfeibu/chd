@@ -15,7 +15,7 @@
                         <label class="layui-form-label">{{ trans('brand.name') }}</label>
 
                         <div class="layui-input-inline">
-                            <select name="type">
+                            <select name="type" lay-search>
                             @foreach($brands as $key => $brand)
                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                             @endforeach
@@ -80,11 +80,78 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">分类</label>
                         <div class="layui-input-block">
-                            <input type="checkbox" name="category[full]" title="全款购车" checked>
-                            <input type="checkbox" name="category[instalment]" title="金融分期" >
-                            <input type="checkbox" name="category[rent]" title="以租代售">
+                            <input type="checkbox" name="category[full]" class="full_checkbox" title="全款购车" checked lay-filter="full">
+                            <input type="checkbox" name="category[instalment]" class="instalment_checkbox" title="金融分期" lay-filter="instalment">
+                            <input type="checkbox" name="category[rent]" class="rent_checkbox" title="以租代售" lay-filter="rent">
                         </div>
                     </div>
+
+                    <div class="layui-form-item" id="instalment" style="display:none;">
+                        @foreach($instalment_financial_products as $key => $product)
+                        <input type="hidden" name="financial_product_id[]" value="{{ $product->id }}">
+                        <fieldset class="layui-elem-field" id="photos">
+                            <legend>{{ $product->name }}</legend>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">首付：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="down[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">比例：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">比例：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">比例：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="periods[]" autocomplete="off" placeholder="期数" class="layui-input" value="">
+                                </div>
+                            </div>
+                        </fieldset>
+                        @endforeach
+                            @foreach($rent_financial_products as $key => $product)
+                                <input type="hidden" name="financial_product_id[]" value="{{ $product->id }}">
+                                <fieldset class="layui-elem-field" id="rent">
+                                    <legend>{{ $product->name }}</legend>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">首付：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="down[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">比例：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">比例：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">比例：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="periods[]" autocomplete="off" placeholder="期数" class="layui-input" value="">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            @endforeach
+                    </div>
+
+
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
@@ -98,3 +165,40 @@
     </div>
 </div>
 {!! Theme::asset()->container('ueditor')->scripts() !!}
+<script>
+
+    layui.use(['jquery','element','table'], function() {
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.$;
+        form.on('checkbox(rent)', function(data){
+            if(data.elem.checked)
+            {
+                $(".full_checkbox").prop('checked',false);
+                $(".instalment_checkbox").prop('checked',false);
+                $("#instalment").hide();
+                $("#full").hide();
+            }
+            form.render();
+        });
+        form.on('checkbox(full)', function(data){
+            if(data.elem.checked)
+            {
+                $(".rent_checkbox").prop('checked',false);
+                $("#rent").hide();
+            }
+            form.render();
+        });
+        form.on('checkbox(instalment)', function(data){
+            if(data.elem.checked)
+            {
+                $(".rent_checkbox").prop('checked',false);
+                $("#instalment").show();
+                $("#rent").hide();
+            }
+            form.render();
+        });
+
+
+    });
+</script>

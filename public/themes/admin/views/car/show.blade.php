@@ -14,7 +14,7 @@
                         <label class="layui-form-label">{{ trans('brand.name') }}</label>
 
                         <div class="layui-input-inline">
-                            <select name="type">
+                            <select name="type" lay-search>
                                 @foreach($brands as $key => $brand)
                                     <option value="{{ $brand->id }}" @if($brand->id == $car->type) selected @endif)>{{ $brand->name }}</option>
                                 @endforeach
