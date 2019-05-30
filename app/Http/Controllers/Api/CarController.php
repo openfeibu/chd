@@ -93,7 +93,7 @@ class CarController extends BaseController
             ->first();
 
        // $car->name = $car->brand_name.' '.$car->name;
-        $car->configure = array_values(json_decode($car->configure,true));
+        $car->configure = $car->configure ? array_values(json_decode($car->configure,true)) : [];
         $car->image = handle_image_url($car->image);
         $car->images = BrandColor::where('brand_id',$car->brand_id)->where('displaying','>','')->pluck('displaying');
         $car->total_price = $car->selling_price * 10000 + $car->commercial_insurance_price;

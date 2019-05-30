@@ -68,7 +68,7 @@ class CarResourceController extends BaseController
     {
         try {
             $attributes = $request->all();
-
+            $attributes['category'] = $attributes['category'] ? implode(',', $attributes['category']) : '';
             $car = $this->repository->create($attributes);
 
             return $this->response->message(trans('messages.success.created', ['Module' => trans('car.name')]))
