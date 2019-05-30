@@ -114,7 +114,7 @@ class CarController extends BaseController
     {
         $limit = $request->input('limit',12);
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.selling_price','cars.year','cars.category')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.image','cars.selling_price','cars.year','cars.category')
             ->where('is_recommend',1)
             ->orderBy('id','desc')
             ->limit($limit)
@@ -122,6 +122,7 @@ class CarController extends BaseController
         $cars_data = $cars->toArray();
         foreach ($cars_data as $key => $car)
         {
+            $car['image'] = $car['image'] ?? $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
         }
         return response()->json([
@@ -133,13 +134,14 @@ class CarController extends BaseController
     {
         $limit = $request->input('limit',5);
         $cars = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.selling_price','cars.year','cars.category')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying as image','cars.id','cars.name','cars.price','cars.selling_price','cars.image','cars.year','cars.category')
             ->orderBy('id','desc')
             ->limit($limit)
             ->get();
         $cars_data = $cars->toArray();
         foreach ($cars_data as $key => $car)
         {
+            $car['image'] = $car['image'] ?? $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
         }
