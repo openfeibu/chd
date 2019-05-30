@@ -88,63 +88,65 @@
 
                     <div class="layui-form-item" id="instalment" style="display:none;">
                         @foreach($instalment_financial_products as $key => $product)
-                        <input type="hidden" name="financial_product_id[]" value="{{ $product->id }}">
+                        <input type="hidden" name="instalment_financial_product_id[]" value="{{ $product->id }}">
                         <fieldset class="layui-elem-field" id="photos">
                             <legend>{{ $product->name }}</legend>
 
                             <div class="layui-form-item">
                                 <label class="layui-form-label">首付：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="down[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
+                                    <input type="text" name="instalment_financial_product_down[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">比例：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="">
+                                    <input type="text" name="instalment_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">比例：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
+                                    <input type="text" name="instalment_financial_product_month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">比例：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="periods[]" autocomplete="off" placeholder="期数" class="layui-input" value="">
+                                    <input type="text" name="instalment_financial_product_periods[]" autocomplete="off" placeholder="期数" class="layui-input" value="">
                                 </div>
                             </div>
                         </fieldset>
                         @endforeach
+                    </div>
+                    <div class="layui-form-item" id="rent" style="display:none;">
                             @foreach($rent_financial_products as $key => $product)
-                                <input type="hidden" name="financial_product_id[]" value="{{ $product->id }}">
-                                <fieldset class="layui-elem-field" id="rent">
+                                <input type="hidden" name="rent_financial_product_id[]" value="{{ $product->id }}">
+                                <fieldset class="layui-elem-field" >
                                     <legend>{{ $product->name }}</legend>
 
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">首付：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="down[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
+                                            <input type="text" name="rent_financial_product_down[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">比例：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="">
+                                            <input type="text" name="rent_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">比例：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
+                                            <input type="text" name="rent_financial_product_month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">比例：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="periods[]" autocomplete="off" placeholder="期数" class="layui-input" value="">
+                                            <input type="text" name="rent_financial_product_periods[]" autocomplete="off" placeholder="期数" class="layui-input" value="">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -178,6 +180,9 @@
                 $(".instalment_checkbox").prop('checked',false);
                 $("#instalment").hide();
                 $("#full").hide();
+                $("#rent").show();
+            }else{
+                $("#rent").hide();
             }
             form.render();
         });
@@ -195,6 +200,8 @@
                 $(".rent_checkbox").prop('checked',false);
                 $("#instalment").show();
                 $("#rent").hide();
+            }else{
+                $("#instalment").hide();
             }
             form.render();
         });

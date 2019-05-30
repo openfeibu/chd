@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\ResourceController as BaseController;
+use App\Models\CarFinancialProduct;
 use App\Models\FinancialProduct;
 use Auth;
 use Illuminate\Http\Request;
@@ -75,6 +76,21 @@ class CarResourceController extends BaseController
             $attributes['category'] = $attributes['category'] ? implode(',', $attributes['category']) : '';
             $car = $this->repository->create($attributes);
 
+            $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
+
+            foreach ($instalment_financial_product_ids as $key =>  $instalment_financial_product_id)
+            {
+                if(!empty($attributes['instalment_financial_product_down'][$key]))
+                {
+                    CarFinancialProduct::create([
+                        'car_id' => $car->id,
+                        'financial_product_id' => $instalment_financial_product_id,
+                        'down' => $attributes['instalment_financial_product_down'][$key],
+                        'ratio' => $attributes['instalment_financial_product_ratio'][$key],
+                        'ratio' => $attributes['instalment_financial_product_ratio'][$key],
+                    ]);
+                }
+            }
             return $this->response->message(trans('messages.success.created', ['Module' => trans('car.name')]))
                 ->code(0)
                 ->status('success')
