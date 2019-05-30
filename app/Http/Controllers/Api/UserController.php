@@ -59,18 +59,18 @@ class UserController extends BaseController
     }
     public function submitLocation(Request $request)
     {
-        //$user = User::getUser();
+        $user = User::getUser();
         $longitude = $request->input('longitude','');
         $latitude =  $request->input('latitude','');
         $amap_service = new AmapService();
 
         $data = $amap_service->geocode_regeo($longitude.','.$latitude);
 
-//        User::where('id',$user->id)->update([
-//            'longitude' => $longitude,
-//            'latitude' => $latitude,
-//            'city' => $data['regeocode']['addressComponent']['city'],
-//        ]);
+        User::where('id',$user->id)->update([
+            'longitude' => $longitude,
+            'latitude' => $latitude,
+            'city' => $data['regeocode']['addressComponent']['city'],
+        ]);
 
         return response()->json([
             'code' => '200',

@@ -80,9 +80,9 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">分类</label>
                         <div class="layui-input-block">
-                            <input type="checkbox" name="category[full]" class="full_checkbox" title="全款购车" checked lay-filter="full">
-                            <input type="checkbox" name="category[instalment]" class="instalment_checkbox" title="金融分期" lay-filter="instalment">
-                            <input type="checkbox" name="category[rent]" class="rent_checkbox" title="以租代售" lay-filter="rent">
+                            <input type="checkbox" name="category[full]" class="full_checkbox" title="全款购车" checked lay-filter="full" value="full">
+                            <input type="checkbox" name="category[instalment]" class="instalment_checkbox" title="金融分期" lay-filter="instalment"  value="instalment">
+                            <input type="checkbox" name="category[rent]" class="rent_checkbox" title="以租代售" lay-filter="rent" value="rent">
                         </div>
                     </div>
 
@@ -101,19 +101,23 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">比例：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="instalment_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="">
+                                    <input type="text" name="instalment_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="98">
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label class="layui-form-label">比例：</label>
+                                <label class="layui-form-label">月供：</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="instalment_financial_product_month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label class="layui-form-label">比例：</label>
+                                <label class="layui-form-label">期数：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="instalment_financial_product_periods[]" autocomplete="off" placeholder="期数" class="layui-input" value="">
+                                    <select name="instalment_financial_product_periods[]">
+                                        <option value="24">24</option>
+                                        <option value="36">36</option>
+                                        <option value="48">48</option>
+                                    </select>
                                 </div>
                             </div>
                         </fieldset>
@@ -134,19 +138,23 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">比例：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="rent_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="">
+                                            <input type="text" name="rent_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="98">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">比例：</label>
+                                        <label class="layui-form-label">月供：</label>
                                         <div class="layui-input-inline">
                                             <input type="text" name="rent_financial_product_month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">比例：</label>
+                                        <label class="layui-form-label">期数：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="rent_financial_product_periods[]" autocomplete="off" placeholder="期数" class="layui-input" value="">
+                                            <select name="instalment_financial_product_periods[]">
+                                                <option value="24">24</option>
+                                                <option value="36">36</option>
+                                                <option value="48">48</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </fieldset>

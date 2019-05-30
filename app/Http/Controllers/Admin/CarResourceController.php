@@ -74,23 +74,59 @@ class CarResourceController extends BaseController
         try {
             $attributes = $request->all();
             $attributes['category'] = $attributes['category'] ? implode(',', $attributes['category']) : '';
-            $car = $this->repository->create($attributes);
 
-            $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
+            $car = $this->repository->create([
+                'name' => isset($attributes['name']) ? $attributes['name'] : '',
+                'year' => isset($attributes['year']) ? $attributes['year'] : '',
+                'type' => isset($attributes['type']) ? $attributes['type'] : '',
+                'price' => isset($attributes['price']) ? $attributes['price'] : '',
+                'configure' => isset($attributes['configure']) ? $attributes['configure'] : '',
+                'selling_price' => isset($attributes['selling_price']) ? $attributes['selling_price'] : '',
+                'commercial_insurance_price' => isset($attributes['commercial_insurance_price']) ? $attributes['commercial_insurance_price'] : '',
+                'production_date' => isset($attributes['production_date']) ? $attributes['production_date'] : '',
+                'emission_standard' => isset($attributes['emission_standard']) ? $attributes['emission_standard'] : '',
+                'note' => isset($attributes['note']) ? $attributes['note'] : '',
+                'image' => isset($attributes['image']) ? $attributes['image'] : '',
+                'category' => isset($attributes['category']) ? $attributes['category'] : ''
+            ]);
 
-            foreach ($instalment_financial_product_ids as $key =>  $instalment_financial_product_id)
+            if(in_array('instalment',$attributes['category']))
             {
-                if(!empty($attributes['instalment_financial_product_down'][$key]))
+                $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
+
+                foreach ($instalment_financial_product_ids as $key =>  $instalment_financial_product_id)
                 {
-                    CarFinancialProduct::create([
-                        'car_id' => $car->id,
-                        'financial_product_id' => $instalment_financial_product_id,
-                        'down' => $attributes['instalment_financial_product_down'][$key],
-                        'ratio' => $attributes['instalment_financial_product_ratio'][$key],
-                        'ratio' => $attributes['instalment_financial_product_ratio'][$key],
-                    ]);
+                    if(!empty($attributes['instalment_financial_product_down'][$key]))
+                    {
+                        CarFinancialProduct::create([
+                            'car_id' => $car->id,
+                            'financial_product_id' => $instalment_financial_product_id,
+                            'down' => $attributes['instalment_financial_product_down'][$key],
+                            'ratio' => $attributes['instalment_financial_product_ratio'][$key],
+                            'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
+                            'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
+                        ]);
+                    }
+                }
+            }else if(in_array('rent',$attributes['category'])){
+                $rent_financial_product_ids = $attributes['rent_financial_product_id'];
+
+                foreach ($rent_financial_product_ids as $key =>  $rent_financial_product_id)
+                {
+                    if(!empty($attributes['rent_financial_product_down'][$key]))
+                    {
+                        CarFinancialProduct::create([
+                            'car_id' => $car->id,
+                            'financial_product_id' => $rent_financial_product_id,
+                            'down' => $attributes['rent_financial_product_down'][$key],
+                            'ratio' => $attributes['rent_financial_product_ratio'][$key],
+                            'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
+                            'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
+                        ]);
+                    }
                 }
             }
+
             return $this->response->message(trans('messages.success.created', ['Module' => trans('car.name')]))
                 ->code(0)
                 ->status('success')
