@@ -74,7 +74,7 @@ class CarController extends BaseController
         {
             //$cars_data[$key]['configure'] = json_decode($car['configure']);
             //$cars_data[$key]['name'] = $car['brand_name'].' '.$car['name'];
-            $car['image'] = $car['image'] ?? $car['displaying'];
+            $car['image'] = !empty($car['image'])  ? $car['image'] : $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
         }
@@ -122,7 +122,7 @@ class CarController extends BaseController
         $cars_data = $cars->toArray();
         foreach ($cars_data as $key => $car)
         {
-            $car['image'] = $car['image'] ?? $car['displaying'];
+            $car['image'] = !empty($car['image'])  ? $car['image'] : $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
         }
         return response()->json([
@@ -141,7 +141,7 @@ class CarController extends BaseController
         $cars_data = $cars->toArray();
         foreach ($cars_data as $key => $car)
         {
-            $car['image'] = $car['image'] ?? $car['displaying'];
+            $car['image'] = !empty($car['image'])  ? $car['image'] : $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
         }
