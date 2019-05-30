@@ -15,6 +15,8 @@ return [
         'selling_price' => '裸车价',
         'deposit' => '订金',
         'total_price' => '总价',
+        'payment' => '支付方式',
+        'transfer_voucher_image' => '转账凭证',
         'status' => '状态',
         'status_desc' => '状态',
         'buy_type' =>  '购车方式',
@@ -31,4 +33,9 @@ return [
         'refunding' => '退款中',
         'refunded' => '已退款',
     ],
+    'payment' => [
+        '' => '未知',
+        'bank' => '银行支付',
+        'wechat' => '微信支付'
+    ]
 ];
