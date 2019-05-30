@@ -36,6 +36,9 @@ Route::group([
     Route::resource('order', 'OrderResourceController');
     Route::post('/order/destroyAll', 'OrderResourceController@destroyAll')->name('order.destroy_all');
 
+    Route::resource('user', 'UserResourceController');
+    Route::post('/user/destroyAll', 'UserResourceController@destroyAll')->name('user.destroy_all');
+
     Route::resource('financial_product', 'FinancialProductResourceController');
     Route::post('/financial_product/destroyAll', 'FinancialProductResourceController@destroyAll')->name('financial_product.destroy_all');
 
