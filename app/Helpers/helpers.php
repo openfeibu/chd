@@ -512,7 +512,7 @@ if (!function_exists('handle_image_url')) {
             {
                 $image_url = $host . '/image/original/'. $image_url;
             }else{
-                $image_url = config('app.ych_image_url'). '/' . $image_url;
+                $image_url = config('app.ych_image_url'). $image_url;
             }
         }
         return $image_url;
