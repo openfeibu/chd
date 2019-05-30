@@ -91,9 +91,9 @@ class CarResourceController extends BaseController
         } else {
             $view = 'car.create';
         }
-
+        $brands = Brand::orderBy('id','asc')->get();
         return $this->response->title(trans('app.view') . ' ' . trans('car.name'))
-            ->data(compact('car'))
+            ->data(compact('car','brands'))
             ->view($view)
             ->output();
     }

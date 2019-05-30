@@ -11,7 +11,7 @@ class CarTransformer extends TransformerAbstract
         return [
             'id' => $car->id,
             'name' => $car->name,
-            'brand_name' => $car->brand->name,
+            'brand_name' => isset($car->brand)  && $car->brand ? $car->brand->name : '未知',
             'price' => $car->price,
             'selling_price' => $car->selling_price,
             'commercial_insurance_price' => $car->commercial_insurance_price,
