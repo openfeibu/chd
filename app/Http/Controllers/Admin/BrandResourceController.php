@@ -28,10 +28,16 @@ class BrandResourceController extends BaseController
     {
         $limit = $request->input('limit',config('app.limit'));
 
+        $parent_id = $request->input('parent_id',0);
+
         if ($this->response->typeIs('json')) {
-            $data = $this->repository
-                ->setPresenter(\App\Repositories\Presenter\BrandPresenter::class)
-                ->orderBy('id','desc')
+            $data = $this->repository;
+            if($parent_id !== '')
+            {
+                $data = $data->where(['parent_id' => $parent_id]);
+            }
+            $data = $data->setPresenter(\App\Repositories\Presenter\BrandPresenter::class)
+                ->orderBy('letter','asc')
                 ->getDataTable($limit);
 
             return $this->response
@@ -41,8 +47,9 @@ class BrandResourceController extends BaseController
                 ->output();
 
         }
-        return $this->response->title(trans('app.car.name'))
-            ->view('car.index')
+        return $this->response->title(trans('brand.name'))
+            ->data(compact('parent_id'))
+            ->view('brand.index')
             ->output();
 
     }
@@ -50,41 +57,41 @@ class BrandResourceController extends BaseController
     {
         $brand = $this->repository->newInstance([]);
 
-        return $this->response->title(trans('app.car.name'))
-            ->view('car.create')
-            ->data(compact('car'))
+        return $this->response->title(trans('brand.name'))
+            ->view('brand.create')
+            ->data(compact('brand'))
             ->output();
     }
     public function store(Request $request)
     {
         try {
             $attributes = $request->all();
-            $attributes['payment_company_id'] = Auth::user()->payment_company_id;
+
             $brand = $this->repository->create($attributes);
 
-            return $this->response->message(trans('messages.success.created', ['Module' => trans('car.name')]))
+            return $this->response->message(trans('messages.success.created', ['Module' => trans('brand.name')]))
                 ->code(0)
                 ->status('success')
-                ->url(guard_url('car'))
+                ->url(guard_url('brand'))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('car'))
+                ->url(guard_url('brand'))
                 ->redirect();
         }
     }
     public function show(Request $request,Brand $brand)
     {
         if ($brand->exists) {
-            $view = 'car.show';
+            $view = 'brand.show';
         } else {
-            $view = 'car.create';
+            $view = 'brand.create';
         }
 
-        return $this->response->title(trans('app.view') . ' ' . trans('car.name'))
-            ->data(compact('car'))
+        return $this->response->title(trans('view') . ' ' . trans('brand.name'))
+            ->data(compact('brand'))
             ->view($view)
             ->output();
     }
@@ -95,28 +102,34 @@ class BrandResourceController extends BaseController
 
             $brand->update($attributes);
 
-            return $this->response->message(trans('messages.success.updated', ['Module' => trans('car.name')]))
+            return $this->response->message(trans('messages.success.updated', ['Module' => trans('brand.name')]))
                 ->code(0)
                 ->status('success')
-                ->url(guard_url('car/' . $brand->id))
+                ->url(guard_url('brand/' . $brand->id))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('car/' . $brand->id))
+                ->url(guard_url('brand/' . $brand->id))
                 ->redirect();
         }
     }
     public function destroy(Request $request,Brand $brand)
     {
         try {
-            $this->repository->forceDelete([$brand->id]);
+            $child_ids = $this->repository->getAllChildIds($brand->id);
 
-            return $this->response->message(trans('messages.success.deleted', ['Module' => trans('car.name')]))
+            array_push($child_ids,$brand->id);
+
+            $this->repository->forceDelete($child_ids);
+
+            Car::whereIn('type',$child_ids)->delete();
+
+            return $this->response->message(trans('messages.success.deleted', ['Module' => trans('brand.name')]))
                 ->status("success")
                 ->code(202)
-                ->url(guard_url('car'))
+                ->url(guard_url('brand'))
                 ->redirect();
 
         } catch (Exception $e) {
@@ -124,7 +137,7 @@ class BrandResourceController extends BaseController
             return $this->response->message($e->getMessage())
                 ->status("error")
                 ->code(400)
-                ->url(guard_url('car'))
+                ->url(guard_url('brand'))
                 ->redirect();
         }
     }
@@ -133,19 +146,28 @@ class BrandResourceController extends BaseController
         try {
             $data = $request->all();
             $ids = $data['ids'];
-            $this->repository->forceDelete($ids);
 
-            return $this->response->message(trans('messages.success.deleted', ['Module' => trans('car.name')]))
+            $all_ids = [];
+            foreach ($ids as $id)
+            {
+                $child_ids = $this->repository->getAllChildIds($id);
+                array_push($child_ids,$id);
+                $all_ids = array_merge($all_ids,$child_ids);
+            }
+            $this->repository->forceDelete($all_ids);
+            Car::whereIn('type',$all_ids)->delete();
+
+            return $this->response->message(trans('messages.success.deleted', ['Module' => trans('brand.name')]))
                 ->status("success")
                 ->code(202)
-                ->url(guard_url('car'))
+                ->url(guard_url('brand'))
                 ->redirect();
 
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->status("error")
                 ->code(400)
-                ->url(guard_url('car'))
+                ->url(guard_url('brand'))
                 ->redirect();
         }
     }

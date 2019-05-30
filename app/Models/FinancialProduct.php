@@ -20,5 +20,8 @@ class FinancialProduct extends BaseModel
      */
     protected $config = 'model.financial.financial_product';
 
-
+    public function financial_category()
+    {
+        return $this->belongsTo('App\Models\FinancialCategory','category_id');
+    }
 }

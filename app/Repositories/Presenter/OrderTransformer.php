@@ -26,6 +26,8 @@ class OrderTransformer extends TransformerAbstract
             'total_price' => $order->total_price,
             'status' => $order->status,
             'status_desc' => $order->status_desc,
+            'payment' => $order->payment,
+            'payment_desc' => $order->payment_desc,
             'buy_type' =>  $order->buy_type,
             'created_at' => $order->created_at->format('Y-m-d H:i:s') ,
         ];

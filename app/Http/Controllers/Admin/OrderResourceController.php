@@ -57,7 +57,7 @@ class OrderResourceController extends BaseController
     {
         try {
             $attributes = $request->all();
-            $attributes['payment_company_id'] = Auth::user()->payment_company_id;
+
             $order = $this->repository->create($attributes);
 
             return $this->response->message(trans('messages.success.created', ['Module' => trans('order.name')]))

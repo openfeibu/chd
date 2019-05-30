@@ -53,12 +53,25 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('order.label.payment') }}：</label>
+                        <div class="layui-input-block">
+                            <p class="input-p">{{ $order->payment_desc }}</p>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('order.label.status') }}：</label>
                         <div class="layui-input-block">
                             <p class="input-p">{{ $order->status_desc }}</p>
                         </div>
                     </div>
-
+                    @if($order->transfer_voucher_image)
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{{ trans('order.label.transfer_voucher_image') }}：</label>
+                            <div class="layui-input-block">
+                                <p class="input-p"> <img src="{{ url('image/original'.$order->transfer_voucher_image) }}"></p>
+                            </div>
+                        </div>
+                    @endif
                     <?php $order_financial = $order->order_financial;?>
                     @if($order_financial)
                         <fieldset class="layui-elem-field" id="photos">

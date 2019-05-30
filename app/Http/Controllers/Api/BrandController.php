@@ -17,7 +17,7 @@ class BrandController extends BaseController
     }
     public function getBrands()
     {
-        $brands = Brand::where('parent_id','0')->orderBy('letter','asc')->orderBy('id','asc')->get();
+        $brands = Brand::where('parent_id','0')->where('status',1)->orderBy('letter','asc')->orderBy('id','asc')->get();
 
         $brands = handle_array_images($brands,'logo');
         return response()->json([

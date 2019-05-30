@@ -73,6 +73,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Eloquent\OrderRepositoryInterface',
             \App\Repositories\Eloquent\OrderRepository::class
         );
+        $this->app->bind(
+            'App\Repositories\Eloquent\FinancialProductRepositoryInterface',
+            \App\Repositories\Eloquent\FinancialProductRepository::class
+        );
 
         $this->app->bind('filer', function ($app) {
             return new \App\Helpers\Filer\Filer();

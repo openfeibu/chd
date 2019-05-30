@@ -22,12 +22,17 @@ class Order extends BaseModel
      */
     protected $config = 'model.order.order';
 
-    protected $appends = ['status_desc','transfer_voucher_image_url','total_price','buy_type'];       // 表里没有的字段
+    protected $appends = ['status_desc','transfer_voucher_image_url','total_price','buy_type','payment_desc'];       // 表里没有的字段
 
     public function getStatusDescAttribute()
     {
         $status = $this->attributes['status'];
         return trans('order.status.'.$status);
+    }
+    public function getPaymentDescAttribute()
+    {
+        $payment = $this->attributes['payment'] ?? '';
+        return trans('order.payment.'.$payment);
     }
     public function getTransferVoucherImageUrlAttribute()
     {

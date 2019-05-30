@@ -36,6 +36,9 @@ Route::group([
     Route::resource('order', 'OrderResourceController');
     Route::post('/order/destroyAll', 'OrderResourceController@destroyAll')->name('order.destroy_all');
 
+    Route::resource('financial_product', 'FinancialProductResourceController');
+    Route::post('/financial_product/destroyAll', 'FinancialProductResourceController@destroyAll')->name('financial_product.destroy_all');
+
     Route::resource('system_page', 'SystemPageResourceController');
     Route::post('/system_page/destroyAll', 'SystemPageResourceController@destroyAll')->name('system_page.destroy_all');
     Route::get('/setting/company', 'SettingResourceController@company')->name('setting.company.index');
