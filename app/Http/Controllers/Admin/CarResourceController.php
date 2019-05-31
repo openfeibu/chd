@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\ResourceController as BaseController;
 use App\Models\CarFinancialProduct;
 use App\Models\FinancialProduct;
+use App\Repositories\Eloquent\BrandRepositoryInterface;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\Car;
@@ -61,6 +62,8 @@ class CarResourceController extends BaseController
     {
         $car = $this->repository->newInstance([]);
         $brands = Brand::orderBy('id','asc')->get();
+//        $brands = app(BrandRepositoryInterface::class)->getAllBrands();
+//        var_dump($brands);exit;
         $instalment_financial_products = FinancialProduct::where('category_id',1)->get();
         $rent_financial_products = FinancialProduct::where('category_id',2)->get();
 
@@ -90,7 +93,7 @@ class CarResourceController extends BaseController
                 'category' => isset($attributes['category']) ? $attributes['category'] : ''
             ]);
 
-            if(in_array('instalment',$attributes['category']))
+            if(strpos($attributes['category'],'instalment') !==false)
             {
                 $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
 
@@ -108,7 +111,7 @@ class CarResourceController extends BaseController
                         ]);
                     }
                 }
-            }else if(in_array('rent',$attributes['category'])){
+            }else if(strpos($attributes['category'],'rent') !==false){
                 $rent_financial_product_ids = $attributes['rent_financial_product_id'];
 
                 foreach ($rent_financial_product_ids as $key =>  $rent_financial_product_id)
@@ -148,8 +151,46 @@ class CarResourceController extends BaseController
             $view = 'car.create';
         }
         $brands = Brand::orderBy('id','asc')->get();
+
+        $instalment_financial_products = FinancialProduct::where('category_id',1)->get();
+        foreach ($instalment_financial_products as $key => $instalment_financial_product)
+        {
+            $car_instalment_financial_product = CarFinancialProduct::where('car_id',$car->id)->where('financial_product_id',$instalment_financial_product->id)->first();
+
+            if($car_instalment_financial_product)
+            {
+                $instalment_financial_products[$key]['down'] = $car_instalment_financial_product->down;
+                $instalment_financial_products[$key]['ratio'] = $car_instalment_financial_product->ratio;
+                $instalment_financial_products[$key]['month_installment'] = $car_instalment_financial_product->month_installment;
+                $instalment_financial_products[$key]['periods'] = $car_instalment_financial_product->periods;
+            }else{
+                $instalment_financial_products[$key]['down'] = '';
+                $instalment_financial_products[$key]['ratio'] = '98';
+                $instalment_financial_products[$key]['month_installment'] = '';
+                $instalment_financial_products[$key]['periods'] = '';
+            }
+        }
+
+        $rent_financial_products = FinancialProduct::where('category_id',2)->get();
+        foreach ($rent_financial_products as $key => $rent_financial_product)
+        {
+            $car_rent_financial_product = CarFinancialProduct::where('car_id',$car->id)->where('financial_product_id',$instalment_financial_product->id)->first();
+            if($car_rent_financial_product)
+            {
+                $rent_financial_products[$key]['down'] = $car_rent_financial_product->down;
+                $rent_financial_products[$key]['ratio'] = $car_rent_financial_product->ratio;
+                $rent_financial_products[$key]['month_installment'] = $car_rent_financial_product->month_installment;
+                $rent_financial_products[$key]['periods'] = $car_rent_financial_product->periods;
+            }else{
+                $rent_financial_products[$key]['down'] = '';
+                $rent_financial_products[$key]['ratio'] = '98';
+                $rent_financial_products[$key]['month_installment'] = '';
+                $rent_financial_products[$key]['periods'] = '';
+            }
+        }
+
         return $this->response->title(trans('app.view') . ' ' . trans('car.name'))
-            ->data(compact('car','brands'))
+            ->data(compact('car','brands','instalment_financial_products','rent_financial_products'))
             ->view($view)
             ->output();
     }
@@ -157,8 +198,59 @@ class CarResourceController extends BaseController
     {
         try {
             $attributes = $request->all();
+            $attributes['category'] = $attributes['category'] ? implode(',', $attributes['category']) : '';
+            CarFinancialProduct::where('car_id',$car->id)->delete();
+            $car->update([
+                'name' => isset($attributes['name']) ? $attributes['name'] : '',
+                'year' => isset($attributes['year']) ? $attributes['year'] : '',
+                'type' => isset($attributes['type']) ? $attributes['type'] : '',
+                'price' => isset($attributes['price']) ? $attributes['price'] : '',
+                'configure' => isset($attributes['configure']) ? $attributes['configure'] : '',
+                'selling_price' => isset($attributes['selling_price']) ? $attributes['selling_price'] : '',
+                'commercial_insurance_price' => isset($attributes['commercial_insurance_price']) ? $attributes['commercial_insurance_price'] : '',
+                'production_date' => isset($attributes['production_date']) ? $attributes['production_date'] : '',
+                'emission_standard' => isset($attributes['emission_standard']) ? $attributes['emission_standard'] : '',
+                'note' => isset($attributes['note']) ? $attributes['note'] : '',
+                'image' => isset($attributes['image']) ? $attributes['image'] : '',
+                'category' => isset($attributes['category']) ? $attributes['category'] : ''
+            ]);
 
-            $car->update($attributes);
+            if(strpos($attributes['category'],'instalment') !==false)
+            {
+                $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
+
+                foreach ($instalment_financial_product_ids as $key =>  $instalment_financial_product_id)
+                {
+                    if(!empty($attributes['instalment_financial_product_down'][$key]))
+                    {
+                        CarFinancialProduct::create([
+                            'car_id' => $car->id,
+                            'financial_product_id' => $instalment_financial_product_id,
+                            'down' => $attributes['instalment_financial_product_down'][$key],
+                            'ratio' => $attributes['instalment_financial_product_ratio'][$key],
+                            'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
+                            'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
+                        ]);
+                    }
+                }
+            }else if(strpos($attributes['category'],'rent') !==false){
+                $rent_financial_product_ids = $attributes['rent_financial_product_id'];
+
+                foreach ($rent_financial_product_ids as $key =>  $rent_financial_product_id)
+                {
+                    if(!empty($attributes['rent_financial_product_down'][$key]))
+                    {
+                        CarFinancialProduct::create([
+                            'car_id' => $car->id,
+                            'financial_product_id' => $rent_financial_product_id,
+                            'down' => $attributes['rent_financial_product_down'][$key],
+                            'ratio' => $attributes['rent_financial_product_ratio'][$key],
+                            'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
+                            'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
+                        ]);
+                    }
+                }
+            }
 
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('car.name')]))
                 ->code(0)

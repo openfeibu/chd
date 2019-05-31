@@ -55,4 +55,14 @@ class Tree
         }
         return $new_arr ? $new_arr : false;
     }
+    public function siblingTree($data,$parent_id=0)
+    {
+        $arr = [];
+        foreach ($data as $key => $item) {
+            if($item['parent_id'] == $parent_id)
+            {
+
+            }
+        }
+    }
 }

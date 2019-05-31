@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use Tree;
 use App\Repositories\Eloquent\BrandRepositoryInterface;
 use App\Repositories\Eloquent\BaseRepository;
 
@@ -10,6 +11,14 @@ class BrandRepository extends BaseRepository implements BrandRepositoryInterface
     public function model()
     {
         return config('model.brand.brand.model');
+    }
+    public function getAllBrands()
+    {
+        $data = [];
+        $brands = $this->model->orderBy('letter','asc')->orderBy('id','asc')->get()->toArray();
+
+        return app(Tree::class)->siblingTree($brands);
+
     }
     public function getAllChildIds($parent_id=0)
     {

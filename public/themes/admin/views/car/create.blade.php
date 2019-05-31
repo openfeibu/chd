@@ -114,9 +114,9 @@
                                 <label class="layui-form-label">期数：</label>
                                 <div class="layui-input-inline">
                                     <select name="instalment_financial_product_periods[]">
-                                        <option value="24">24</option>
-                                        <option value="36">36</option>
-                                        <option value="48">48</option>
+                                        @foreach(config('common.periods') as $key => $periods)
+                                            <option value="{{ $periods }}" >{{ $periods }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -151,9 +151,9 @@
                                         <label class="layui-form-label">期数：</label>
                                         <div class="layui-input-inline">
                                             <select name="instalment_financial_product_periods[]">
-                                                <option value="24">24</option>
-                                                <option value="36">36</option>
-                                                <option value="48">48</option>
+                                                @foreach(config('common.periods') as $key => $periods)
+                                                    <option value="{{ $periods }}" >{{ $periods }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
