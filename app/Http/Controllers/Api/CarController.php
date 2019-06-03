@@ -89,7 +89,7 @@ class CarController extends BaseController
     public function getCar(Request $request, $id)
     {
         $car = Car::join('brands','brands.id','=','cars.type')
-            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.year','cars.image','cars.configure','cars.selling_price','cars.commercial_insurance_price','cars.production_date','cars.emission_standard','cars.note','cars.category')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.year','cars.image','cars.configure','cars.selling_price','cars.commercial_insurance_price','cars.production_date','cars.emission_standard','cars.note','cars.content','cars.category')
             ->where('cars.id',$id)
             ->first();
         $car->image = $car->image ?? $car->displaying;
