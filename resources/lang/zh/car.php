@@ -12,6 +12,7 @@ return [
         'emission_standard' => '排放标准',
         'note' => '票据',
         'commercial_insurance_price' => '商业保险费',
+        'content' => '备注',
     ],
     'message'     => [
         'nopage' => 'Page not found.',

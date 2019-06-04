@@ -205,6 +205,7 @@ class CarResourceController extends BaseController
                 'year' => isset($attributes['year']) ? $attributes['year'] : '',
                 'type' => isset($attributes['type']) ? $attributes['type'] : '',
                 'price' => isset($attributes['price']) ? $attributes['price'] : '',
+                'content' => isset($attributes['content']) ? $attributes['content'] : '',
                 'configure' => isset($attributes['configure']) ? $attributes['configure'] : '',
                 'selling_price' => isset($attributes['selling_price']) ? $attributes['selling_price'] : '',
                 'commercial_insurance_price' => isset($attributes['commercial_insurance_price']) ? $attributes['commercial_insurance_price'] : '',

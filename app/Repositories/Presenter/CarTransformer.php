@@ -19,7 +19,7 @@ class CarTransformer extends TransformerAbstract
             'emission_standard' => $car->emission_standard,
             'note' => $car->note,
             'year' => $car->year,
-
+            'content' => $car->content,
         ];
     }
 }

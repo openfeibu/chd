@@ -71,6 +71,12 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">{{ trans('car.label.content') }}</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="content" autocomplete="off" placeholder="请输入{{ trans('car.label.content') }}" class="layui-input" value="{{ $car->content }}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">图片</label>
                         {!! $car->files('image')
                         ->url($car->getUploadUrl('image'))
