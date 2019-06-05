@@ -115,7 +115,7 @@ class CarController extends BaseController
         $limit = $request->input('limit',12);
         $cars = Car::join('brands','brands.id','=','cars.type')
             ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.image','cars.selling_price','cars.year','cars.category')
-            ->where('recommend_type','home')
+            ->where('recommend_type','hot')
             ->orderBy('id','desc')
             ->limit($limit)
             ->get();
