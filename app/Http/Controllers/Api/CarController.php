@@ -76,7 +76,7 @@ class CarController extends BaseController
             //$cars_data[$key]['name'] = $car['brand_name'].' '.$car['name'];
             $car['image'] = !empty($car['image'])  ? $car['image'] : $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
-            $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
+            $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
         }
 
         return response()->json([
@@ -102,7 +102,7 @@ class CarController extends BaseController
         $car = $car->toArray();
 
         $car['images'] = handle_images($car['images']);
-        $car['financial'] = CarFinancialProduct::select('car_financial_products.id as car_financial_product_id','car_financial_products.down','car_financial_products.ratio','car_financial_products.month_installment','car_financial_products.periods','financial_products.name','financial_products.content')->join('financial_products','financial_products.id','=','car_financial_products.financial_product_id')->where('car_financial_products.car_id',$car['id'])->orderBy('car_financial_products.id','asc')->get();
+        $car['financial'] = CarFinancialProduct::getCarFirstFinancials($car['id']);
 
         $car['insurance_rebate_text']= setting('insurance_rebate_text');
         return response()->json([
@@ -143,7 +143,7 @@ class CarController extends BaseController
         {
             $car['image'] = !empty($car['image'])  ? $car['image'] : $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
-            $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
+            $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
         }
         return response()->json([
             'code' => '200',
@@ -165,7 +165,7 @@ class CarController extends BaseController
         {
             $car['image'] = !empty($car['image'])  ? $car['image'] : $car['displaying'];
             $cars_data[$key]['image'] = handle_image_url($car['image']);
-            $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
+            $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
         }
         return response()->json([
             'code' => '200',

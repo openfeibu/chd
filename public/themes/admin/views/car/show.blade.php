@@ -90,7 +90,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">分类</label>
                         <div class="layui-input-block">
-                            <input type="checkbox" name="category[full]" class="full_checkbox" title="全款购车" checked lay-filter="full" value="full" @if($car->is_full) checked @endif>
+                            <input type="checkbox" name="category[full]" class="full_checkbox" title="全款购车" lay-filter="full" value="full" @if($car->is_full) checked @endif>
                             <input type="checkbox" name="category[instalment]" class="instalment_checkbox" title="金融分期" lay-filter="instalment"  value="instalment" @if($car->is_instalment) checked @endif>
                             <input type="checkbox" name="category[rent]" class="rent_checkbox" title="以租代售" lay-filter="rent" value="rent" @if($car->is_rent) checked @endif>
                         </div>
@@ -160,7 +160,7 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">期数：</label>
                                     <div class="layui-input-inline">
-                                        <select name="instalment_financial_product_periods[]">
+                                        <select name="rent_financial_product_periods[]">
                                             @foreach(config('common.periods') as $key => $periods)
                                                 <option value="{{ $periods }}" @if($product['periods'] == $periods) selected @endif>{{ $periods }}</option>
                                             @endforeach
@@ -184,3 +184,45 @@
     </div>
 </div>
 {!! Theme::asset()->container('ueditor')->scripts() !!}
+<script>
+
+    layui.use(['jquery','element','table'], function() {
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.$;
+        form.on('checkbox(rent)', function(data){
+            if(data.elem.checked)
+            {
+                $(".full_checkbox").prop('checked',false);
+                $(".instalment_checkbox").prop('checked',false);
+                $("#instalment").hide();
+                $("#full").hide();
+                $("#rent").show();
+            }else{
+                $("#rent").hide();
+            }
+            form.render();
+        });
+        form.on('checkbox(full)', function(data){
+            if(data.elem.checked)
+            {
+                $(".rent_checkbox").prop('checked',false);
+                $("#rent").hide();
+            }
+            form.render();
+        });
+        form.on('checkbox(instalment)', function(data){
+            if(data.elem.checked)
+            {
+                $(".rent_checkbox").prop('checked',false);
+                $("#instalment").show();
+                $("#rent").hide();
+            }else{
+                $("#instalment").hide();
+            }
+            form.render();
+        });
+
+
+    });
+</script>
