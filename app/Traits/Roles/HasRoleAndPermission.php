@@ -180,8 +180,8 @@ trait HasRoleAndPermission
             ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.id')
             ->join('roles', 'roles.id', '=', 'permission_role.role_id')
             ->whereIn('roles.id', $this->getRoles()->pluck('id')->toArray())
-            ->orWhere('roles.level', '<', $this->level())
-            ->groupBy(['permissions.slug']);
+            ->orWhere('roles.level', '<', $this->level());
+            //->groupBy(['permissions.slug']);
     }
 
     public function menus($parent_id = 0)
@@ -203,7 +203,7 @@ trait HasRoleAndPermission
             ->where('parent_id', $parent_id)
             ->whereIn('roles.id', $this->getRoles()->pluck('id')->toArray())
             ->orWhere('roles.level', '<', $this->level())
-            ->groupBy(['permissions.slug'])
+            //->groupBy(['permissions.slug'])
             ->get();
     }
 

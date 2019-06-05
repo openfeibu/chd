@@ -80,4 +80,7 @@ return [
     'text'        => [
         'preview' => 'Click on the below list for preview',
     ],
+    'about_rent' => [
+        'name' => '什么是以租代售'
+    ],
 ];

@@ -56,16 +56,17 @@ Route::group([
     Route::resource('permission', 'PermissionResourceController');
     Route::resource('role', 'RoleResourceController');
 
-    Route::group(['prefix' => 'case','as' => 'case.'], function ($router) {
-        Route::resource('case', 'CaseResourceController');
-        Route::post('/case/destroyAll', 'CaseResourceController@destroyAll')->name('case.destroy_all');
-        Route::resource('category', 'CaseCategoryResourceController');
-        Route::post('/category/destroyAll', 'CaseCategoryResourceController@destroyAll')->name('category.destroy_all');
-    });
+
 
     Route::group(['prefix' => 'page','as' => 'page.'], function ($router) {
         Route::resource('page', 'PageResourceController');
         Route::resource('category', 'PageCategoryResourceController');
+
+    });
+    Route::group(['prefix' => 'page','as' => 'page.','namespace' => 'Page'], function ($router) {
+        Route::get('/about_rent/show', 'AboutRentResourceController@show')->name('about_rent.show');
+        Route::post('/about_rent/store', 'AboutRentResourceController@store')->name('about_rent.store');
+        Route::put('/about_rent/update/{page}', 'AboutRentResourceController@update')->name('about_rent.update');
     });
     Route::group(['prefix' => 'menu'], function ($router) {
         Route::get('index', 'MenuResourceController@index');

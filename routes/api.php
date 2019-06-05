@@ -26,6 +26,8 @@ $api->version('v1', function ($api) {
     $api->post('/submit_location','App\Http\Controllers\Api\UserController@submitLocation');
 
     $api->get('/','App\Http\Controllers\Api\HomeController@index');
+    $api->get('/page','App\Http\Controllers\Api\HomeController@getPage');
+
     $api->get('/banner','App\Http\Controllers\Api\HomeController@getBanners');
     $api->get('/brand','App\Http\Controllers\Api\BrandController@getBrands');
     $api->get('/car','App\Http\Controllers\Api\CarController@getCars');
@@ -47,6 +49,8 @@ $api->version('v1', function ($api) {
     $api->get('/get_auth_file','App\Http\Controllers\Api\HomeController@getAuthFile');
     $api->get('/is_wechat_check','App\Http\Controllers\Api\HomeController@getWechatCheck');
     $api->get('/insurance_rebate_text','App\Http\Controllers\Api\HomeController@getInsuranceRebateText');
+
+
     /*
     $api->post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
     $api->post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');

@@ -77,4 +77,15 @@ class HomeController extends BaseController
             'data' => setting('insurance_rebate_text'),
         ]);
     }
+    public function getPage(Request $request)
+    {
+        $slug = $request->input('slug','about_rent');
+        return response()->json([
+            'code' => '200',
+            'data' => [
+                'title' => page($slug,'title'),
+                'content' => page($slug,'content')
+            ],
+        ]);
+    }
 }
