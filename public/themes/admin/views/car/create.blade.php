@@ -84,6 +84,11 @@
                         ->uploader()!!}
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">推荐</label>
+                        <input type="radio" name="recommend_type" value="hot" title="热销">
+                        <input type="radio" name="recommend_type" value="rent" title="以租代售推荐">
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">分类</label>
                         <div class="layui-input-block">
                             <input type="checkbox" name="category[full]" class="full_checkbox" title="全款购车" checked lay-filter="full" value="full">

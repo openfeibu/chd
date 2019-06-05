@@ -58,6 +58,21 @@
                             <input type="text" name="note" autocomplete="off" placeholder="请输入{{ trans('financial_product.label.note') }}" class="layui-input" value="{{ $financial_product->note }}">
                         </div>
                     </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">授权书名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="auth_file_name" autocomplete="off" placeholder="请输入授权书名称" class="layui-input" value="">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">授权书</label>
+                        {!! $financial_product->files('auth_file')
+                        ->url($financial_product->getUploadUrl('auth_file'))
+                        ->uploader()!!}
+                    </div>
+
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>

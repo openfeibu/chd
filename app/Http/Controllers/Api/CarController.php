@@ -150,7 +150,7 @@ class CarController extends BaseController
             'data' => $cars_data
         ]);
     }
-    public function getRentRecommendCars(Request $request)
+    public function getRecommendRentCars(Request $request)
     {
         $limit = $request->input('limit',3);
         $cars = Car::join('brands','brands.id','=','cars.type')

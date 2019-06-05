@@ -31,6 +31,7 @@ $api->version('v1', function ($api) {
     $api->get('/car','App\Http\Controllers\Api\CarController@getCars');
     $api->get('/car/{id}','App\Http\Controllers\Api\CarController@getCar');
     $api->get('/recommend_car','App\Http\Controllers\Api\CarController@getRecommendCars');
+    $api->get('/recommend_rent_car','App\Http\Controllers\Api\CarController@getRecommendRentCars');
     $api->get('/new_car','App\Http\Controllers\Api\CarController@getNewCars');
     $api->get('/brand-color','App\Http\Controllers\Api\BrandController@getBrandColors');
     $api->get('/brand-interior-color','App\Http\Controllers\Api\BrandController@getBrandInteriorColors');

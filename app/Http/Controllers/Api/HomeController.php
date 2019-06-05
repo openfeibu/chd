@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\CarFinancialProduct;
+use App\Models\FinancialProduct;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Banner;
@@ -41,12 +44,18 @@ class HomeController extends BaseController
     }
     public function getAuthFile(Request $request)
     {
-        $icbc_auth_file = url('image/original/'.setting('icbc_auth_file'));
-        $icbc_auth_file_name = setting('icbc_auth_file','title');
+        $order_id = $request->order_id;
+
+        $car_financial_product_id = Order::where('id',$order_id)->value('car_financial_product_id');
+
+        $car_financial_product = CarFinancialProduct::where('id',$car_financial_product_id)->first();
+
+        $financial_product = FinancialProduct::where('id',$car_financial_product->financial_product_id)->first();
+
         $data = [
             '0' => [
-                'name' =>  $icbc_auth_file_name,
-                'image' =>  $icbc_auth_file,
+                'name' =>  $financial_product ? url('image/origianl'.$financial_product->auth_file) : '',
+                'image' =>  $financial_product ? $financial_product->auth_file_name : '',
             ],
         ];
         return response()->json([

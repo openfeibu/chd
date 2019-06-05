@@ -90,7 +90,8 @@ class CarResourceController extends BaseController
                 'emission_standard' => isset($attributes['emission_standard']) ? $attributes['emission_standard'] : '',
                 'note' => isset($attributes['note']) ? $attributes['note'] : '',
                 'image' => isset($attributes['image']) ? $attributes['image'] : '',
-                'category' => isset($attributes['category']) ? $attributes['category'] : ''
+                'category' => isset($attributes['category']) ? $attributes['category'] : '',
+                'recommend_type' => isset($attributes['recommend_type']) ? $attributes['recommend_type'] : ''
             ]);
 
             if(strpos($attributes['category'],'instalment') !==false)
@@ -213,7 +214,8 @@ class CarResourceController extends BaseController
                 'emission_standard' => isset($attributes['emission_standard']) ? $attributes['emission_standard'] : '',
                 'note' => isset($attributes['note']) ? $attributes['note'] : '',
                 'image' => isset($attributes['image']) ? $attributes['image'] : '',
-                'category' => isset($attributes['category']) ? $attributes['category'] : ''
+                'category' => isset($attributes['category']) ? $attributes['category'] : '',
+                'recommend_type' => isset($attributes['recommend_type']) ? $attributes['recommend_type'] : ''
             ]);
 
             if(strpos($attributes['category'],'instalment') !==false)

@@ -23,7 +23,7 @@ return [
         'visible'      => [],
         'guarded'      => ['*'],
         'dates'        => ['deleted_at'],
-        'fillable'     => ['name','year','type','price','listorder','configure','selling_price','commercial_insurance_price','production_date','emission_standard','note','image','category','content'],
+        'fillable'     => ['name','year','type','price','listorder','configure','selling_price','commercial_insurance_price','production_date','emission_standard','note','image','category','content','recommend_type'],
         'translate'    => ['name','year','type','price','listorder','configure'],
         'upload_folder' => '/page/page',
         'encrypt'      => ['id'],

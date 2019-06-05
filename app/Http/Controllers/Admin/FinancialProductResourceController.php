@@ -98,7 +98,7 @@ class FinancialProductResourceController extends BaseController
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('financial_product.name')]))
                 ->code(0)
                 ->status('success')
-                ->url(guard_url('financial_product/' . $financial_product->id))
+                ->url(guard_url('financial_product/'))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
