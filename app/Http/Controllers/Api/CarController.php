@@ -115,7 +115,7 @@ class CarController extends BaseController
         $limit = $request->input('limit',12);
         $cars = Car::join('brands','brands.id','=','cars.type')
             ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.image','cars.selling_price','cars.year','cars.category')
-            ->where('is_recommend',1)
+            ->where('recommend_type','home')
             ->orderBy('id','desc')
             ->limit($limit)
             ->get();
@@ -149,5 +149,28 @@ class CarController extends BaseController
             'code' => '200',
             'data' => $cars_data
         ]);
+    }
+    public function getRentRecommendCars(Request $request)
+    {
+        $limit = $request->input('limit',3);
+        $cars = Car::join('brands','brands.id','=','cars.type')
+            ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.image','cars.selling_price','cars.year','cars.category')
+            ->where('recommend_type','rent')
+            ->whereRaw("find_in_set('rent',category)")
+            ->orderBy('id','desc')
+            ->limit($limit)
+            ->get();
+        $cars_data = $cars->toArray();
+        foreach ($cars_data as $key => $car)
+        {
+            $car['image'] = !empty($car['image'])  ? $car['image'] : $car['displaying'];
+            $cars_data[$key]['image'] = handle_image_url($car['image']);
+            $cars_data[$key]['financial'] = CarFinancialProduct::select('down','ratio','month_installment','periods')->where('car_id',$car['id'])->orderBy('id','asc')->first();
+        }
+        return response()->json([
+            'code' => '200',
+            'data' => $cars_data
+        ]);
+
     }
 }
