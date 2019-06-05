@@ -108,7 +108,7 @@ class CarResourceController extends BaseController
                             'down' => $attributes['instalment_financial_product_down'][$key],
                             'ratio' => $attributes['instalment_financial_product_ratio'][$key],
                             'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
-                            'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
+                            'periods' => $attributes['instalment_financial_product_periods'][$key],
                         ]);
                     }
                 }
@@ -125,7 +125,7 @@ class CarResourceController extends BaseController
                             'down' => $attributes['rent_financial_product_down'][$key],
                             'ratio' => $attributes['rent_financial_product_ratio'][$key],
                             'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
-                            'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
+                            'periods' => $attributes['instalment_financial_product_periods'][$key],
                         ]);
                     }
                 }
@@ -232,7 +232,7 @@ class CarResourceController extends BaseController
                             'down' => $attributes['instalment_financial_product_down'][$key],
                             'ratio' => $attributes['instalment_financial_product_ratio'][$key],
                             'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
-                            'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
+                            'periods' => $attributes['instalment_financial_product_periods'][$key],
                         ]);
                     }
                 }
@@ -249,7 +249,7 @@ class CarResourceController extends BaseController
                             'down' => $attributes['rent_financial_product_down'][$key],
                             'ratio' => $attributes['rent_financial_product_ratio'][$key],
                             'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
-                            'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
+                            'periods' => $attributes['instalment_financial_product_periods'][$key],
                         ]);
                     }
                 }
