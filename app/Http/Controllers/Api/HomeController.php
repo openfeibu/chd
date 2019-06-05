@@ -55,7 +55,7 @@ class HomeController extends BaseController
         $data = [
             '0' => [
                 'name' => $financial_product ? $financial_product->auth_file_name : '',
-                'image' => $financial_product ? url('image/origianl'.$financial_product->auth_file) : '',
+                'image' => $financial_product ? url('image/original'.$financial_product->auth_file) : '',
             ],
         ];
         return response()->json([
