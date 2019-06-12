@@ -192,6 +192,7 @@
         var table = layui.table;
         var form = layui.form;
         var $ = layui.$;
+        form.render();
         form.on('checkbox(rent)', function(data){
             if(data.elem.checked)
             {

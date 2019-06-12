@@ -244,7 +244,7 @@ abstract class BaseRepository extends PrettusRepository implements RepositoryInt
     }
     public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
-        $this->model = $this->model->where($column, $operator = null, $value = null, $boolean = 'and');
+        $this->model = $this->model->where($column, $operator,$value,$boolean = 'and');
 
         return $this;
     }
