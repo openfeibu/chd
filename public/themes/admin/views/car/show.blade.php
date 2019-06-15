@@ -100,8 +100,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">推荐</label>
                         <input type="checkbox" name="recommend_type[]" value="new" title="新车上架" @if(strpos($car->recommend_type ,'new') !== false) checked @endif>
-                        <input type="checkbox" name="recommend_type" value="hot" title="为你推荐" @if(strpos($car->recommend_type ,'hot') !== false) checked @endif>
-                        <input type="checkbox" name="recommend_type" value="rent" title="以租代售推荐" @if(strpos($car->recommend_type ,'rent') !== false) checked @endif>
+                        <input type="checkbox" name="recommend_type[]" value="hot" title="为你推荐" @if(strpos($car->recommend_type ,'hot') !== false) checked @endif>
+                        <input type="checkbox" name="recommend_type[]" value="rent" title="以租代售推荐" @if(strpos($car->recommend_type ,'rent') !== false) checked @endif>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">分类</label>
