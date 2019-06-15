@@ -91,7 +91,7 @@ class CarResourceController extends BaseController
                 'note' => isset($attributes['note']) ? $attributes['note'] : '',
                 'image' => isset($attributes['image']) ? $attributes['image'] : '',
                 'category' => isset($attributes['category']) ? $attributes['category'] : '',
-                'recommend_type' => isset($attributes['recommend_type']) ? $attributes['recommend_type'] : ''
+                'recommend_type' => isset($attributes['recommend_type']) ? implode(',',$attributes['recommend_type']) : ''
             ]);
             $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
             foreach ($instalment_financial_product_ids as $key =>  $instalment_financial_product_id)

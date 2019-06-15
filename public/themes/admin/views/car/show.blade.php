@@ -55,19 +55,34 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.production_date') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="production_date" autocomplete="off" placeholder="请输入{{ trans('car.label.production_date') }}" class="layui-input" value="{{ $car->production_date }}">
+                            <select class="layui-select" name="production_date">
+                                <option value="{{ $car->production_date }}">{{ $car->production_date }}</option>
+                                @foreach(config('model.car.car.production_date') as $key => $production_date)
+                                    <option value="{{ $production_date }}">{{ $production_date }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.emission_standard') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="emission_standard" autocomplete="off" placeholder="请输入{{ trans('car.label.emission_standard') }}" class="layui-input" value="{{ $car->emission_standard }}">
+                            <select class="layui-select" name="emission_standard">
+                                <option value="{{ $car->emission_standard }}">{{ $car->emission_standard }}</option>
+                                @foreach(config('model.car.car.emission_standard') as $key => $emission_standard)
+                                    <option value="{{ $emission_standard }}">{{ $emission_standard }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.note') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="note" autocomplete="off" placeholder="请输入{{ trans('car.label.note') }}" class="layui-input" value="{{ $car->note }}">
+                            <select class="layui-select" name="note">
+                                <option value="{{ $car->note }}">{{ $car->note }}</option>
+                                @foreach(config('model.car.car.note') as $key => $note)
+                                    <option value="{{ $note }}">{{ $note }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -84,8 +99,9 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">推荐</label>
-                        <input type="radio" name="recommend_type" value="hot" title="热销" @if($car->recommend_type == 'hot') checked @endif>
-                        <input type="radio" name="recommend_type" value="rent" title="以租代售推荐" @if($car->recommend_type == 'rent') checked @endif>
+                        <input type="checkbox" name="recommend_type[]" value="new" title="新车上架" @if(strpos($car->recommend_type ,'new') !== false) checked @endif>
+                        <input type="checkbox" name="recommend_type" value="hot" title="为你推荐" @if(strpos($car->recommend_type ,'hot') !== false) checked @endif>
+                        <input type="checkbox" name="recommend_type" value="rent" title="以租代售推荐" @if(strpos($car->recommend_type ,'rent') !== false) checked @endif>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">分类</label>

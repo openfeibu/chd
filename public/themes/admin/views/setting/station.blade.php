@@ -18,17 +18,37 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">Logo</label>
-                        {!! $setting['logo']->files('value')->field('logo')
-                        ->url($setting['logo']->getUploadUrl('value'))
-                        ->uploader()!!}
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">版权声明</label>
+                        <label class="layui-form-label">开户银行</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="right" lay-verify="companyName" autocomplete="off" placeholder="版权" class="layui-input" value="{{$setting['right']}}">
+                            <input type="text" name="bank"  autocomplete="off" placeholder="开户银行" class="layui-input" value="{{$setting['bank']}}">
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">开户银行账号名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="bank_name"  autocomplete="off" placeholder="开户银行账号名称" class="layui-input" value="{{$setting['bank_name']}}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">开户银行银行账号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="bank_account"  autocomplete="off" placeholder="开户银行银行账号" class="layui-input" value="{{$setting['bank_account']}}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">保险返佣备注</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="insurance_rebate_text"  autocomplete="off" placeholder="保险返佣备注" class="layui-input" value="{{$setting['insurance_rebate_text']}}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">微信审核已通过?</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="wechat_check" value="1" title="是" @if($setting['wechat_check'] == 1) checked @endif>
+                            <input type="radio" name="wechat_check" value="0" title="否" @if($setting['wechat_check'] == 0) checked @endif>
+                        </div>
+                    </div>
+
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
@@ -44,6 +64,7 @@
     layui.use(['jquery','element','form','table','upload'], function(){
         var form = layui.form;
         var $ = layui.$;
+        form.render();
         //监听提交
         form.on('submit(demo1)', function(data){
             data = JSON.stringify(data.field);

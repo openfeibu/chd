@@ -50,25 +50,37 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.year') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="year" autocomplete="off" placeholder="请输入{{ trans('car.label.year') }}" class="layui-input" value="{{ $car->year }}">
+                            <input type="text" name="year" autocomplete="off" placeholder="请输入{{ trans('car.label.year') }}" class="layui-input" value="{{ $car->year }}" id="year">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.production_date') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="production_date" autocomplete="off" placeholder="请输入{{ trans('car.label.production_date') }}" class="layui-input" value="{{ $car->production_date }}">
+                            <select class="layui-select" name="production_date">
+                            @foreach(config('model.car.car.production_date') as $key => $production_date)
+                                <option value="{{ $production_date }}">{{ $production_date }}</option>
+                            @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.emission_standard') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="emission_standard" autocomplete="off" placeholder="请输入{{ trans('car.label.emission_standard') }}" class="layui-input" value="{{ $car->emission_standard }}">
+                            <select class="layui-select" name="emission_standard">
+                            @foreach(config('model.car.car.emission_standard') as $key => $emission_standard)
+                                <option value="{{ $emission_standard }}">{{ $emission_standard }}</option>
+                            @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.note') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="note" autocomplete="off" placeholder="请输入{{ trans('car.label.note') }}" class="layui-input" value="{{ $car->note }}">
+                            <select class="layui-select" name="note">
+                            @foreach(config('model.car.car.note') as $key => $note)
+                                <option value="{{ $note }}">{{ $note }}</option>
+                            @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -84,9 +96,10 @@
                         ->uploader()!!}
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">推荐</label>
-                        <input type="radio" name="recommend_type" value="hot" title="热销">
-                        <input type="radio" name="recommend_type" value="rent" title="以租代售推荐">
+                        <label class="layui-form-label">首页推荐</label>
+                        <input type="checkbox" name="recommend_type[]" value="new" title="新车上架">
+                        <input type="checkbox" name="recommend_type[]" value="hot" title="为你推荐">
+                        <input type="checkbox" name="recommend_type[]" value="rent" title="以租代售">
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">分类</label>
@@ -188,11 +201,18 @@
 {!! Theme::asset()->container('ueditor')->scripts() !!}
 <script>
 
-    layui.use(['jquery','element','table'], function() {
+    layui.use(['jquery','element','table','laydate'], function() {
         var table = layui.table;
         var form = layui.form;
         var $ = layui.$;
         form.render();
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#year' //指定元素
+            ,type: 'year'
+        });
         form.on('checkbox(rent)', function(data){
             if(data.elem.checked)
             {

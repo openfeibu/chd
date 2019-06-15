@@ -28,6 +28,15 @@ return [
         'configure' => [
 
         ],
+        'production_date' => [
+            '一个月内','三个月内','六个月内','九个月内','一年内','两年内','三年内','三年以上'
+        ],
+        'emission_standard' => [
+            '国四','国五','国六'
+        ],
+        'note' => [
+            '4s店票','汽贸票'
+        ],
         'upload_folder' => '/page/page',
         'encrypt'      => ['id'],
         'revision'     => ['name'],
