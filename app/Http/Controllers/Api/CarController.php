@@ -115,7 +115,7 @@ class CarController extends BaseController
         $limit = $request->input('limit',12);
         $cars = Car::join('brands','brands.id','=','cars.type')
             ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.image','cars.selling_price','cars.year','cars.category')
-            ->where('recommend_type','hot')
+            ->whereRaw("find_in_set('hot',recommend_type)")
             ->orderBy('id','desc')
             ->limit($limit)
             ->get();
@@ -135,6 +135,7 @@ class CarController extends BaseController
         $limit = $request->input('limit',5);
         $cars = Car::join('brands','brands.id','=','cars.type')
             ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.selling_price','cars.image','cars.year','cars.category')
+            ->whereRaw("find_in_set('new',recommend_type)")
             ->orderBy('id','desc')
             ->limit($limit)
             ->get();
@@ -155,7 +156,7 @@ class CarController extends BaseController
         $limit = $request->input('limit',3);
         $cars = Car::join('brands','brands.id','=','cars.type')
             ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.image','cars.selling_price','cars.year','cars.category')
-            ->where('recommend_type','rent')
+            ->whereRaw("find_in_set('rent',recommend_type)")
             ->whereRaw("find_in_set('rent',category)")
             ->orderBy('id','desc')
             ->limit($limit)
