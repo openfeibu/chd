@@ -246,7 +246,7 @@ class CarResourceController extends BaseController
                 'note' => isset($attributes['note']) ? $attributes['note'] : '',
                 'image' => isset($attributes['image']) ? $attributes['image'] : '',
                 'category' => isset($attributes['category']) ? $attributes['category'] : '',
-                'recommend_type' => isset($attributes['recommend_type']) ? $attributes['recommend_type'] : ''
+                'recommend_type' => isset($attributes['recommend_type']) ? implode(',',$attributes['recommend_type']) : ''
             ]);
             if(strpos($attributes['category'],'instalment') !==false)
             {
