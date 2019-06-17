@@ -252,11 +252,12 @@ trait Filer
      * Return the main image for the record.
      *
      * @param type|string $field
+     * @param type|bool $multiple
      * @param type|bool $download
      *
      * @return array path
      */
-    public function getFile($field, $download = false)
+    public function getFile($field, $multiple = false,$download = false)
     {
         $files = $this->$field;
 
@@ -265,6 +266,12 @@ trait Filer
         if (empty($files)) {
             return [];
         }
+
+        if($multiple)
+        {
+            $files = explode(',',$files);
+        }
+
         if(!is_array($files)){
             return [
                 'url' => url("{$prefix}/" . $files),
@@ -272,23 +279,26 @@ trait Filer
             ];
         }
 
+        $data = [];
+
         foreach ($files as $key => $file) {
-            $files[$key]['url'] = url("{$prefix}/" . $file['path']);
+            $data[$key]['url'] = url("{$prefix}/" . $file);
+            $data[$key]['path'] = $file;
         }
 
-        return $files;
+        return $data;
     }
 
     /**
      * Display files inside a form.
      *
      * @param type|string $field
-     *
+     * @param type|bool $multiple
      * @return string path
      */
-    public function files($field)
+    public function files($field,$multiple=false)
     {
-        $form = new Forms($field, $this->config, $this->getFile($field));
+        $form = new Forms($field, $this->config, $this->getFile($field,$multiple));
         return $form;
     }
 

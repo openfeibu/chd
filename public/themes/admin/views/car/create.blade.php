@@ -91,9 +91,9 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">图片</label>
-                        {!! $car->files('image')
+                        {!! $car->files('image',true)
                         ->url($car->getUploadUrl('image'))
-                        ->uploader()!!}
+                        ->uploaders()!!}
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">首页推荐</label>

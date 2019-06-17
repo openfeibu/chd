@@ -49,7 +49,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.year') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="year" autocomplete="off" placeholder="请输入{{ trans('car.label.year') }}" class="layui-input" value="{{ $car->year }}">
+                            <input type="text" name="year" autocomplete="off" placeholder="请输入{{ trans('car.label.year') }}" class="layui-input" value="{{ $car->year }}" id="year">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -93,9 +93,9 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">图片</label>
-                        {!! $car->files('image')
+                        {!! $car->files('image',true)
                         ->url($car->getUploadUrl('image'))
-                        ->uploader()!!}
+                        ->uploaders()!!}
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">推荐</label>
@@ -202,11 +202,16 @@
 {!! Theme::asset()->container('ueditor')->scripts() !!}
 <script>
 
-    layui.use(['jquery','element','table'], function() {
+    layui.use(['jquery','element','table','laydate'], function() {
         var table = layui.table;
         var form = layui.form;
         var $ = layui.$;
         form.render();
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#year' //指定元素
+            ,type: 'year'
+        });
         form.on('checkbox(rent)', function(data){
             if(data.elem.checked)
             {

@@ -29,7 +29,7 @@ Route::group([
 
     Route::resource('car', 'CarResourceController');
     Route::post('/car/destroyAll', 'CarResourceController@destroyAll')->name('car.destroy_all');
-    Route::put('/car/updateField/{car}', 'CarResourceController@updateField')->name('car.update_field');;
+    Route::put('/car/updateField/{car}', 'CarResourceController@updateField')->name('car.update_field');
 
     Route::resource('brand', 'BrandResourceController');
     Route::post('/brand/destroyAll', 'BrandResourceController@destroyAll')->name('brand.destroy_all');

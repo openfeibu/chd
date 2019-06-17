@@ -89,7 +89,7 @@ class CarResourceController extends BaseController
                 'production_date' => isset($attributes['production_date']) ? $attributes['production_date'] : '',
                 'emission_standard' => isset($attributes['emission_standard']) ? $attributes['emission_standard'] : '',
                 'note' => isset($attributes['note']) ? $attributes['note'] : '',
-                'image' => isset($attributes['image']) ? $attributes['image'] : '',
+                'image' => isset($attributes['image']) ? implode(',',$attributes['image']) : '',
                 'category' => isset($attributes['category']) ? $attributes['category'] : '',
                 'recommend_type' => isset($attributes['recommend_type']) ? implode(',',$attributes['recommend_type']) : ''
             ]);
@@ -244,7 +244,7 @@ class CarResourceController extends BaseController
                 'production_date' => isset($attributes['production_date']) ? $attributes['production_date'] : '',
                 'emission_standard' => isset($attributes['emission_standard']) ? $attributes['emission_standard'] : '',
                 'note' => isset($attributes['note']) ? $attributes['note'] : '',
-                'image' => isset($attributes['image']) ? $attributes['image'] : '',
+                'image' => isset($attributes['image']) ? implode(',',$attributes['image']) : '',
                 'category' => isset($attributes['category']) ? $attributes['category'] : '',
                 'recommend_type' => isset($attributes['recommend_type']) ? implode(',',$attributes['recommend_type']) : ''
             ]);
