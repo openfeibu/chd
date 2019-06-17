@@ -355,6 +355,26 @@ class CarResourceController extends BaseController
                 ->redirect();
         }
     }
+    public function updateField(Request $request,Car $car)
+    {
+        try {
+            $attributes = $request->all();
+
+            $car->update($attributes);
+
+            return $this->response->message(trans('messages.success.updated', ['Module' => trans('car.name')]))
+                ->code(0)
+                ->status('success')
+                ->url(guard_url('car/'))
+                ->redirect();
+        } catch (Exception $e) {
+            return $this->response->message($e->getMessage())
+                ->code(400)
+                ->status('error')
+                ->url(guard_url('car/'))
+                ->redirect();
+        }
+    }
     public function destroy(Request $request,Car $car)
     {
         try {

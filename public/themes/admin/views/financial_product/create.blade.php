@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">授权书</label>
+                        <label class="layui-form-label">授权书模板</label>
                         {!! $financial_product->files('auth_file')
                         ->url($financial_product->getUploadUrl('auth_file'))
                         ->uploader()!!}

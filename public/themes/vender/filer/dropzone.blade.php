@@ -20,6 +20,7 @@
             elem: '#uploadImage_{!!$field!!}'
             ,accept:'images'
             ,url: '{!! $url !!}'
+            //,multiple:true
             ,data: {
                 '_token':$('meta[name="csrf-token"]').attr('content')
             }

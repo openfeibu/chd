@@ -35,6 +35,7 @@
 
 <script>
     var main_url = "{{guard_url('car')}}";
+    var update_field_url = "{{guard_url('car/updateField')}}";
     var delete_all_url = "{{guard_url('car/destroyAll')}}";
     layui.use(['jquery','element','table'], function(){
         var table = layui.table;

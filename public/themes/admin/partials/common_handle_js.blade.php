@@ -45,8 +45,15 @@
             ajax_data[field] = value;
             // 加载样式
             var load = layer.load();
+            if(typeof update_field_url != "undefined")
+            {
+                var url = update_field_url;
+            }else
+            {
+                var url = main_url;
+            }
             $.ajax({
-                url : main_url+'/'+data.id,
+                url : url+'/'+data.id,
                 data : ajax_data,
                 type : 'PUT',
                 success : function (data) {

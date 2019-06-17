@@ -35,7 +35,7 @@ return [
             '国四','国五','国六'
         ],
         'note' => [
-            '4s店票','汽贸票'
+            '4s店票','汽贸票','增票'
         ],
         'upload_folder' => '/page/page',
         'encrypt'      => ['id'],
