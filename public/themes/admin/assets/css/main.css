@@ -179,8 +179,22 @@ button.layui-close{
     width:300px;
     height: 200px;
 }
-
-
-
+.handle_count{
+    font-size: 30px;
+    margin: 0 10px;
+}
+.financial_product{
+    position: relative;
+    border: 1px solid #000;
+    padding: 10px;
+    margin: 15px 15px 0 0 ;
+    width: 45%;
+    float:left;
+}
+.financial_product_content .delete{
+    position: absolute;
+    right: -25px;
+    top: -15px;
+}
 
 

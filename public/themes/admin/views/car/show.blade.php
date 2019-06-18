@@ -113,79 +113,107 @@
                     </div>
 
                     <div class="layui-form-item" id="instalment" @if(!$car->is_instalment) style="display:none;" @endif>
-                        @foreach($instalment_financial_products as $key => $product)
-                            <input type="hidden" name="instalment_financial_product_id[]" value="{{ $product->id }}">
-                            <fieldset class="layui-elem-field" id="photos">
-                                <legend>{{ $product->name }}</legend>
+                        @foreach($instalment_financial_product_arr as $key => $product)
+                            <input type="hidden" name="instalment_financial_product_id[]" value="{{ $product['id'] }}">
+                            <fieldset class="layui-elem-field" product-id="{{ $product['id'] }}">
+                                <legend>{{ $product['name'] }}</legend>
+                                @foreach($product['car_instalment_financial_products'] as $key => $car_instalment_financial_product)
+                                    <div class="financial_product financial_product_{{ $product['id'] }}" product-id="{{ $product['id'] }}">
+                                        <input type="hidden" name="car_financial_product_id_{{ $product['id'] }}[]" value="{{ $car_instalment_financial_product['id'] }}" class="car_financial_product_id">
+                                        <div class="financial_product_content">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">首付：</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="instalment_financial_product_down_{{ $product['id'] }}[]" autocomplete="off" placeholder="首付" class="layui-input" value="{{ $car_instalment_financial_product['down'] }}">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">比例：</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="instalment_financial_product_ratio_{{ $product['id'] }}[]" autocomplete="off" placeholder="比例" class="layui-input" value="{{ $car_instalment_financial_product['ratio'] }}">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">月供：</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="instalment_financial_product_month_installment_{{ $product['id'] }}[]" autocomplete="off" placeholder="月供" class="layui-input" value="{{ $car_instalment_financial_product['month_installment'] }}">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">期数：</label>
+                                                <div class="layui-input-inline">
+                                                    <select name="instalment_financial_product_periods_{{ $product['id'] }}[]">
+                                                        @foreach(config('common.periods') as $key => $periods)
+                                                            <option value="{{ $periods }}" @if($car_instalment_financial_product['periods'] == $periods) selected @endif>{{ $periods }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <i class="handle_count delete layui-icon layui-icon-close-fill"></i>
+                                        </div>
+                                    </div>
 
+                                @endforeach
                                 <div class="layui-form-item">
-                                    <label class="layui-form-label">首付：</label>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="instalment_financial_product_down[]" autocomplete="off" placeholder="首付" class="layui-input" value="{{ $product['down'] }}">
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">比例：</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="instalment_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="{{ $product['ratio'] }}">
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">月供：</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="instalment_financial_product_month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="{{ $product['month_installment'] }}">
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">期数：</label>
-                                    <div class="layui-input-inline">
-                                        <select name="instalment_financial_product_periods[]">
-                                            @foreach(config('common.periods') as $key => $periods)
-                                            <option value="{{ $periods }}" @if($product['periods'] == $periods) selected @endif>{{ $periods }}</option>
-                                            @endforeach
-                                        </select>
+                                        <i class="handle_count add layui-icon layui-icon-add-circle-fine"></i>
                                     </div>
                                 </div>
                             </fieldset>
                         @endforeach
                     </div>
+
                     <div class="layui-form-item" id="rent" @if(!$car->is_rent) style="display:none;" @endif>
-                        @foreach($rent_financial_products as $key => $product)
-                            <input type="hidden" name="rent_financial_product_id[]" value="{{ $product->id }}">
-                            <fieldset class="layui-elem-field" >
-                                <legend>{{ $product->name }}</legend>
+                        @foreach($rent_financial_product_arr as $key => $product)
+                            <input type="hidden" name="rent_financial_product_id[]" value="{{ $product['id'] }}">
+                            <fieldset class="layui-elem-field" product-id="{{ $product['id'] }}">
+                                <legend>{{ $product['name'] }}</legend>
+                                @foreach($product['car_rent_financial_products'] as $key => $car_rent_financial_product)
+                                    <div class="financial_product financial_product_{{ $product['id'] }}" product-id="{{ $product['id'] }}">
+                                        <input type="hidden" name="car_financial_product_id_{{ $product['id'] }}[]" value="{{ $car_rent_financial_product['id'] }}" class="car_financial_product_id">
+                                        <div class="financial_product_content">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">首付：</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="rent_financial_product_down_{{ $product['id'] }}[]" autocomplete="off" placeholder="首付" class="layui-input" value="{{ $car_rent_financial_product['down'] }}">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">比例：</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="rent_financial_product_ratio_{{ $product['id'] }}[]" autocomplete="off" placeholder="比例" class="layui-input" value="{{ $car_rent_financial_product['ratio'] }}">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">月供：</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="rent_financial_product_month_installment_{{ $product['id'] }}[]" autocomplete="off" placeholder="月供" class="layui-input" value="{{ $car_rent_financial_product['month_installment'] }}">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">期数：</label>
+                                                <div class="layui-input-inline">
+                                                    <select name="rent_financial_product_periods_{{ $product['id'] }}[]">
+                                                        @foreach(config('common.periods') as $key => $periods)
+                                                            <option value="{{ $periods }}" @if($car_rent_financial_product['periods'] == $periods) selected @endif>{{ $periods }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <i class="handle_count delete layui-icon layui-icon-close-fill"></i>
+                                        </div>
+                                    </div>
 
+                                @endforeach
                                 <div class="layui-form-item">
-                                    <label class="layui-form-label">首付：</label>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="rent_financial_product_down[]" autocomplete="off" placeholder="首付" class="layui-input" value="{{ $product['down'] }}">
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">比例：</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="rent_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="{{ $product['ratio'] }}">
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">月供：</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="rent_financial_product_month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="{{ $product['month_installment'] }}">
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">期数：</label>
-                                    <div class="layui-input-inline">
-                                        <select name="rent_financial_product_periods[]">
-                                            @foreach(config('common.periods') as $key => $periods)
-                                                <option value="{{ $periods }}" @if($product['periods'] == $periods) selected @endif>{{ $periods }}</option>
-                                            @endforeach
-                                        </select>
+                                        <i class="handle_count add layui-icon layui-icon-add-circle-fine"></i>
                                     </div>
                                 </div>
                             </fieldset>
                         @endforeach
                     </div>
+
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
@@ -244,7 +272,46 @@
             }
             form.render();
         });
+        $("body").on('click','.handle_count',function(){
+            var product_id = $(this).parents("fieldset").attr('product-id');
+            var count = $(".financial_product_"+product_id).length;
 
+            if($(this).hasClass('add'))
+            {
+                var html = "<div class='financial_product financial_product_"+product_id+"'><input type='hidden' name='car_financial_product_id_"+product_id+"[]' value=''><div class='financial_product_content'>" +$(".financial_product_"+product_id).first().find(".financial_product_content").html()+"</div></div>" ;
+                $(".financial_product_"+product_id).last().after(html);
+            }
+            if($(this).hasClass('delete'))
+            {
+                var car_financial_product_id = $(this).parents(".financial_product").find(".car_financial_product_id").val();
+                var that = $(this);
+                layer.confirm('是否删除？',{title:'提示'},function(index){
+                    layer.close(index);
+                    if(car_financial_product_id)
+                    {
+                        var load = layer.load();
+                        $.ajax({
+                            url : "{{ guard_url('car/destroyCarFinancial') }}",
+                            data :  {'car_financial_product_id':car_financial_product_id,'_token' : "{!! csrf_token() !!}"},
+                            type : 'POST',
+                            success : function (data) {
+                                layer.close(load);
+                                that.parents(".financial_product").remove();
+                            },
+                            error : function (jqXHR, textStatus, errorThrown) {
+                                layer.close(load);
+                                layer.msg('服务器出错');
+                            }
+                        });
+                    }else{
+                        that.parents(".financial_product").remove();
+                    }
+
+                });
+
+            }
+            form.render();
+        })
 
     });
 </script>

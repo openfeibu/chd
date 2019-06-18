@@ -109,30 +109,31 @@ class CarResourceController extends BaseController
             $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
             foreach ($instalment_financial_product_ids as $key =>  $instalment_financial_product_id)
             {
-
-                CarFinancialProduct::create([
-                    'car_id' => $car->id,
-                    'financial_product_id' => $instalment_financial_product_id,
-                    'down' => $attributes['instalment_financial_product_down'][$key],
-                    'ratio' => $attributes['instalment_financial_product_ratio'][$key],
-                    'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
-                    'periods' => $attributes['instalment_financial_product_periods'][$key],
-                ]);
-
+                foreach ($attributes['instalment_financial_product_down_'.$instalment_financial_product_id] as $k => $instalment_financial_product_down)
+                {
+                    CarFinancialProduct::create([
+                        'car_id' => $car->id,
+                        'financial_product_id' => $instalment_financial_product_id,
+                        'down' => $instalment_financial_product_down,
+                        'ratio' => $attributes['instalment_financial_product_ratio_'.$instalment_financial_product_id][$k],
+                        'month_installment' => $attributes['instalment_financial_product_month_installment_'.$instalment_financial_product_id][$k],
+                        'periods' => $attributes['instalment_financial_product_periods_'.$instalment_financial_product_id][$k],
+                    ]);
+                }
             }
             $rent_financial_product_ids = $attributes['rent_financial_product_id'];
-            foreach ($rent_financial_product_ids as $key =>  $rent_financial_product_id)
-            {
-
-                CarFinancialProduct::create([
-                    'car_id' => $car->id,
-                    'financial_product_id' => $rent_financial_product_id,
-                    'down' => $attributes['rent_financial_product_down'][$key],
-                    'ratio' => $attributes['rent_financial_product_ratio'][$key],
-                    'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
-                    'periods' => $attributes['instalment_financial_product_periods'][$key],
-                ]);
-
+            foreach ($rent_financial_product_ids as $key =>  $rent_financial_product_id) {
+                foreach ($attributes['rent_financial_product_down_' . $rent_financial_product_id] as $k => $rent_financial_product_down)
+                {
+                    CarFinancialProduct::create([
+                        'car_id' => $car->id,
+                        'financial_product_id' => $rent_financial_product_id,
+                        'down' => $rent_financial_product_down,
+                        'ratio' => $attributes['rent_financial_product_ratio_'.$rent_financial_product_id][$k],
+                        'month_installment' => $attributes['rent_financial_product_month_installment_'.$rent_financial_product_id][$k],
+                        'periods' => $attributes['instalment_financial_product_periods_'.$rent_financial_product_id][$k],
+                    ]);
+                }
             }
             /*
             if(strpos($attributes['category'],'instalment') !==false)
@@ -195,44 +196,65 @@ class CarResourceController extends BaseController
         $brands = Brand::orderBy('id','asc')->get();
 
         $instalment_financial_products = FinancialProduct::where('category_id',1)->get();
+        $instalment_financial_product_arr = [];
         foreach ($instalment_financial_products as $key => $instalment_financial_product)
         {
-            $car_instalment_financial_product = CarFinancialProduct::where('car_id',$car->id)->where('financial_product_id',$instalment_financial_product->id)->first();
-
-            if($car_instalment_financial_product)
+            $car_instalment_financial_products = CarFinancialProduct::where('car_id',$car->id)->where('financial_product_id',$instalment_financial_product->id)->orderBy('id','asc')->get();
+            $instalment_financial_product_arr[$key] = $instalment_financial_product->toArray();
+            if($car_instalment_financial_products)
             {
-                $instalment_financial_products[$key]['down'] = $car_instalment_financial_product->down;
-                $instalment_financial_products[$key]['ratio'] = $car_instalment_financial_product->ratio;
-                $instalment_financial_products[$key]['month_installment'] = $car_instalment_financial_product->month_installment;
-                $instalment_financial_products[$key]['periods'] = $car_instalment_financial_product->periods;
+                foreach ($car_instalment_financial_products as $k => $car_instalment_financial_product)
+                {
+                    $instalment_financial_product_arr[$key]['car_instalment_financial_products'][$k] = [
+                        'id' => $car_instalment_financial_product->id,
+                        'down' => $car_instalment_financial_product->down,
+                        'ratio' => $car_instalment_financial_product->ratio,
+                        'month_installment' => $car_instalment_financial_product->month_installment,
+                        'periods' => $car_instalment_financial_product->periods,
+                    ];
+                }
             }else{
-                $instalment_financial_products[$key]['down'] = '';
-                $instalment_financial_products[$key]['ratio'] = '98';
-                $instalment_financial_products[$key]['month_installment'] = '';
-                $instalment_financial_products[$key]['periods'] = '';
+                $instalment_financial_product_arr[$key]['car_instalment_financial_products'][$k] = [
+                    'id' => '',
+                    'down' => '',
+                    'ratio' => '98',
+                    'month_installment' => '',
+                    'periods' => '',
+                ];
             }
         }
 
         $rent_financial_products = FinancialProduct::where('category_id',2)->get();
+        $rent_financial_product_arr = [];
         foreach ($rent_financial_products as $key => $rent_financial_product)
         {
-            $car_rent_financial_product = CarFinancialProduct::where('car_id',$car->id)->where('financial_product_id',$rent_financial_product->id)->first();
-            if($car_rent_financial_product)
+            $car_rent_financial_products = CarFinancialProduct::where('car_id',$car->id)->where('financial_product_id',$rent_financial_product->id)->get();
+            $rent_financial_product_arr[$key] = $rent_financial_product->toArray();
+            if($car_rent_financial_products)
             {
-                $rent_financial_products[$key]['down'] = $car_rent_financial_product->down;
-                $rent_financial_products[$key]['ratio'] = $car_rent_financial_product->ratio;
-                $rent_financial_products[$key]['month_installment'] = $car_rent_financial_product->month_installment;
-                $rent_financial_products[$key]['periods'] = $car_rent_financial_product->periods;
+                foreach ($car_rent_financial_products as $k => $car_rent_financial_product)
+                {
+                    $rent_financial_product_arr[$key]['car_rent_financial_products'][$k] = [
+                        'id' => $car_rent_financial_product->id,
+                        'down' => $car_rent_financial_product->down,
+                        'ratio' => $car_rent_financial_product->ratio,
+                        'month_installment' => $car_rent_financial_product->month_installment,
+                        'periods' => $car_rent_financial_product->periods,
+                    ];
+                }
             }else{
-                $rent_financial_products[$key]['down'] = '';
-                $rent_financial_products[$key]['ratio'] = '98';
-                $rent_financial_products[$key]['month_installment'] = '';
-                $rent_financial_products[$key]['periods'] = '';
+                $rent_financial_product_arr[$key]['car_rent_financial_products'][$k] = [
+                    'id' => '',
+                    'down' => '',
+                    'ratio' => '98',
+                    'month_installment' => '',
+                    'periods' => '',
+                ];
             }
-        }
 
+        }
         return $this->response->title(trans('app.view') . ' ' . trans('car.name'))
-            ->data(compact('car','brands','instalment_financial_products','rent_financial_products'))
+            ->data(compact('car','brands','instalment_financial_products','rent_financial_products','instalment_financial_product_arr','rent_financial_product_arr'))
             ->view($view)
             ->output();
     }
@@ -267,25 +289,29 @@ class CarResourceController extends BaseController
 
                 foreach ($instalment_financial_product_ids as $key =>  $instalment_financial_product_id)
                 {
-                    $car_financial_product = CarFinancialProduct::where('car_id',$car->id)->where('financial_product_id',$instalment_financial_product_id)->first();
-                    if($car_financial_product)
-                    {
-                        CarFinancialProduct::where('id',$car_financial_product->id)->update([
-                            'financial_product_id' => $instalment_financial_product_id,
-                            'down' => $attributes['instalment_financial_product_down'][$key],
-                            'ratio' => $attributes['instalment_financial_product_ratio'][$key],
-                            'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
-                            'periods' => $attributes['instalment_financial_product_periods'][$key],
-                        ]);
-                    }else{
-                        CarFinancialProduct::create([
-                            'car_id' => $car->id,
-                            'financial_product_id' => $instalment_financial_product_id,
-                            'down' => $attributes['instalment_financial_product_down'][$key],
-                            'ratio' => $attributes['instalment_financial_product_ratio'][$key],
-                            'month_installment' => $attributes['instalment_financial_product_month_installment'][$key],
-                            'periods' => $attributes['instalment_financial_product_periods'][$key],
-                        ]);
+                    foreach ($attributes['instalment_financial_product_down_'.$instalment_financial_product_id] as $k => $instalment_financial_product_down) {
+                        $car_financial_product_id = $attributes['car_financial_product_id_'.$instalment_financial_product_id][$k];
+                        if($car_financial_product_id)
+                        {
+                            $car_financial_product = CarFinancialProduct::where('id',$car_financial_product_id)->first();
+                            CarFinancialProduct::where('id',$car_financial_product->id)->update([
+                                'financial_product_id' => $instalment_financial_product_id,
+                                'down' => $instalment_financial_product_down,
+                                'ratio' => $attributes['instalment_financial_product_ratio_'.$instalment_financial_product_id][$k],
+                                'month_installment' => $attributes['instalment_financial_product_month_installment_'.$instalment_financial_product_id][$k],
+                                'periods' => $attributes['instalment_financial_product_periods_'.$instalment_financial_product_id][$k],
+                            ]);
+                        }else{
+                            CarFinancialProduct::create([
+                                'car_id' => $car->id,
+                                'financial_product_id' => $instalment_financial_product_id,
+                                'down' => $instalment_financial_product_down,
+                                'ratio' => $attributes['instalment_financial_product_ratio_'.$instalment_financial_product_id][$k],
+                                'month_installment' => $attributes['instalment_financial_product_month_installment_'.$instalment_financial_product_id][$k],
+                                'periods' => $attributes['instalment_financial_product_periods_'.$instalment_financial_product_id][$k],
+                            ]);
+                        }
+
                     }
                 }
             }
@@ -295,25 +321,29 @@ class CarResourceController extends BaseController
 
                 foreach ($rent_financial_product_ids as $key =>  $rent_financial_product_id)
                 {
-                    $car_financial_product = CarFinancialProduct::where('car_id',$car->id)->where('financial_product_id',$rent_financial_product_id)->first();
-                    if($car_financial_product)
-                    {
-                        CarFinancialProduct::where('id',$car_financial_product->id)->update([
-                            'financial_product_id' => $rent_financial_product_id,
-                            'down' => $attributes['rent_financial_product_down'][$key],
-                            'ratio' => $attributes['rent_financial_product_ratio'][$key],
-                            'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
-                            'periods' => $attributes['rent_financial_product_periods'][$key],
-                        ]);
-                    }else{
-                        CarFinancialProduct::create([
-                            'car_id' => $car->id,
-                            'financial_product_id' => $rent_financial_product_id,
-                            'down' => $attributes['rent_financial_product_down'][$key],
-                            'ratio' => $attributes['rent_financial_product_ratio'][$key],
-                            'month_installment' => $attributes['rent_financial_product_month_installment'][$key],
-                            'periods' => $attributes['rent_financial_product_periods'][$key],
-                        ]);
+                    foreach ($attributes['rent_financial_product_down_'.$rent_financial_product_id] as $k => $rent_financial_product_down) {
+                        $car_financial_product_id = $attributes['car_financial_product_id_'.$rent_financial_product_id][$k];
+                        if($car_financial_product_id)
+                        {
+                            $car_financial_product = CarFinancialProduct::where('id',$car_financial_product_id)->first();
+                            CarFinancialProduct::where('id',$car_financial_product->id)->update([
+                                'financial_product_id' => $rent_financial_product_id,
+                                'down' => $rent_financial_product_down,
+                                'ratio' => $attributes['rent_financial_product_ratio_'.$rent_financial_product_id][$k],
+                                'month_installment' => $attributes['rent_financial_product_month_installment_'.$rent_financial_product_id][$k],
+                                'periods' => $attributes['rent_financial_product_periods_'.$rent_financial_product_id][$k],
+                            ]);
+                        }else{
+                            CarFinancialProduct::create([
+                                'car_id' => $car->id,
+                                'financial_product_id' => $rent_financial_product_id,
+                                'down' => $rent_financial_product_down,
+                                'ratio' => $attributes['rent_financial_product_ratio_'.$rent_financial_product_id][$k],
+                                'month_installment' => $attributes['rent_financial_product_month_installment_'.$rent_financial_product_id][$k],
+                                'periods' => $attributes['rent_financial_product_periods_'.$rent_financial_product_id][$k],
+                            ]);
+                        }
+
                     }
                 }
             }
@@ -418,6 +448,26 @@ class CarResourceController extends BaseController
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('car.name')]))
                 ->status("success")
                 ->code(202)
+                ->url(guard_url('car'))
+                ->redirect();
+
+        } catch (Exception $e) {
+            return $this->response->message($e->getMessage())
+                ->status("error")
+                ->code(400)
+                ->url(guard_url('car'))
+                ->redirect();
+        }
+    }
+    public function destroyCarFinancial(Request $request)
+    {
+        try {
+            $id = $request->car_financial_product_id;
+            CarFinancialProduct::where('id',$id)->delete();
+
+            return $this->response->message(trans('messages.success.deleted', ['Module' => '']))
+                ->status("success")
+                ->code(200)
                 ->url(guard_url('car'))
                 ->redirect();
 

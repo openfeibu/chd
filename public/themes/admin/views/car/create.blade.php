@@ -104,44 +104,51 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">分类</label>
                         <div class="layui-input-block">
-                            <input type="checkbox" name="category[full]" class="full_checkbox" title="全款购车" checked lay-filter="full" value="full">
-                            <input type="checkbox" name="category[instalment]" class="instalment_checkbox" title="金融分期" lay-filter="instalment"  value="instalment">
+                            <input type="checkbox" name="category[instalment]" class="instalment_checkbox" title="金融分期" lay-filter="instalment"  value="instalment" checked>
+                            <input type="checkbox" name="category[full]" class="full_checkbox" title="全款购车"  lay-filter="full" value="full">
                             <input type="checkbox" name="category[rent]" class="rent_checkbox" title="以租代售" lay-filter="rent" value="rent">
                         </div>
                     </div>
 
-                    <div class="layui-form-item" id="instalment" style="display:none;">
+                    <div class="layui-form-item" id="instalment">
                         @foreach($instalment_financial_products as $key => $product)
                         <input type="hidden" name="instalment_financial_product_id[]" value="{{ $product->id }}">
-                        <fieldset class="layui-elem-field" id="photos">
+                        <fieldset class="layui-elem-field" product-id="{{ $product->id }}">
                             <legend>{{ $product->name }}</legend>
-
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">首付：</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="instalment_financial_product_down[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
+                            <div class="financial_product financial_product_{{ $product->id }}" product-id="{{ $product->id }}">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">首付：</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="instalment_financial_product_down_{{ $product->id }}[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">比例：</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="instalment_financial_product_ratio_{{ $product->id }}[]" autocomplete="off" placeholder="比例" class="layui-input" value="98">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">月供：</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="instalment_financial_product_month_installment_{{ $product->id }}[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">期数：</label>
+                                    <div class="layui-input-inline">
+                                        <select name="instalment_financial_product_periods_{{ $product->id }}[]">
+                                            @foreach(config('common.periods') as $key => $periods)
+                                                <option value="{{ $periods }}" >{{ $periods }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label class="layui-form-label">比例：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="instalment_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="98">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">月供：</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="instalment_financial_product_month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">期数：</label>
-                                <div class="layui-input-inline">
-                                    <select name="instalment_financial_product_periods[]">
-                                        @foreach(config('common.periods') as $key => $periods)
-                                            <option value="{{ $periods }}" >{{ $periods }}</option>
-                                        @endforeach
-                                    </select>
+                                    <i class="handle_count add layui-icon layui-icon-add-circle-fine"></i>
+                                    <i class="handle_count delete layui-icon layui-icon-close-fill"></i>
                                 </div>
                             </div>
                         </fieldset>
@@ -156,25 +163,25 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">首付：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="rent_financial_product_down[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
+                                            <input type="text" name="rent_financial_product_down_{{ $product->id }}[]" autocomplete="off" placeholder="首付" class="layui-input" value="">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">比例：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="rent_financial_product_ratio[]" autocomplete="off" placeholder="比例" class="layui-input" value="98">
+                                            <input type="text" name="rent_financial_product_ratio_{{ $product->id }}[]" autocomplete="off" placeholder="比例" class="layui-input" value="98">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">月供：</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="rent_financial_product_month_installment[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
+                                            <input type="text" name="rent_financial_product_month_installment_{{ $product->id }}[]" autocomplete="off" placeholder="月供" class="layui-input" value="">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">期数：</label>
                                         <div class="layui-input-inline">
-                                            <select name="instalment_financial_product_periods[]">
+                                            <select name="instalment_financial_product_periods_{{ $product->id }}[]">
                                                 @foreach(config('common.periods') as $key => $periods)
                                                     <option value="{{ $periods }}" >{{ $periods }}</option>
                                                 @endforeach
@@ -246,6 +253,23 @@
             form.render();
         });
 
+        $(".handle_count").click(function(){
+            var product_id = $(this).parents("fieldset").attr('product-id');
+            var count = $(".financial_product_"+product_id).length;
 
+            if($(this).hasClass('add'))
+            {
+                var html = "<div class='financial_product financial_product_"+product_id+"'>" +$(".financial_product_"+product_id).first().html()+"</div>" ;
+                $(".financial_product_"+product_id).last().after(html);
+            }
+            if($(this).hasClass('delete'))
+            {
+                if(count >=2)
+                {
+                    $(".financial_product_"+product_id).last().remove();
+                }
+            }
+            form.render();
+        });
     });
 </script>

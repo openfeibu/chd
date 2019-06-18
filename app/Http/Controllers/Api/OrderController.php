@@ -71,6 +71,7 @@ class OrderController extends BaseController
         {
             $car_financial_product = CarFinancialProduct::where('id',$attributes['car_financial_product_id'])->first();
             $financial_product = FinancialProduct::where('id',$car_financial_product['financial_product_id'])->first();
+            $attributes['financial_product_id'] = $financial_product['id'];
             $attributes['financial_product_name'] = $financial_product['name'];
             $attributes['down'] = $car_financial_product['down'];
             $attributes['ratio'] = $car_financial_product['ratio'];

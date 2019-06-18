@@ -49,7 +49,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('order.label.buy_type') }}：</label>
                         <div class="layui-input-block">
-                            <p class="input-p">{{ $order->buy_type }}</p>
+                            <p class="input-p">{{ $order->buy_type }}@if($order->financial_product_name)（{{$order->financial_product_name}}）@endif</p>
                         </div>
                     </div>
                     <div class="layui-form-item">

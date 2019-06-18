@@ -23,6 +23,7 @@ class OrderTransformer extends TransformerAbstract
             'is_commercial_insurance' => $order->is_commercial_insurance,
             'selling_price' => $order->selling_price,
             'car_financial_product_id' => $order->car_financial_product_id,
+            'financial_product_name' => $order->financial_product_name,
             'total_price' => $order->total_price,
             'status' => $order->status,
             'status_desc' => $order->status_desc,
