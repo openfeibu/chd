@@ -7,7 +7,7 @@
                 @foreach($files as $file)
                     <div id="" class="file-iteme">
                         <div class="handle"><i class="layui-icon layui-icon-delete delete" style="font-size: 30px; color: #fff;"></i>  </div>
-                        <img src="{!!url("/image/sm".$file['path'])!!}">
+                        <img src="{!!url("/image/original".$file['path'])!!}">
                         <input type="hidden" name="{!!$field!!}[]" id="path_{!!$field!!}" value="{{$file['path']}}"/>
                      </div>
                 @endforeach

@@ -52,12 +52,18 @@ class HomeController extends BaseController
 
         $financial_product = FinancialProduct::where('id',$car_financial_product->financial_product_id)->first();
 
-        $data = [
-            '0' => [
-                'name' => $financial_product ? $financial_product->auth_file_name : '',
-                'image' => $financial_product ? url('image/original'.$financial_product->auth_file) : '',
-            ],
-        ];
+        $auth_files = explode(',',$financial_product->auth_file);
+        $data = [];
+        $i=1;
+        foreach ($auth_files as $key => $auth_file)
+        {
+            $data[] =[
+                'name' =>  $financial_product->auth_file_name.'模板'.$i,
+                'image' => url('image/original'.$auth_file)
+            ];
+            $i++;
+        }
+
         return response()->json([
             'code' => '200',
             'data' => $data,

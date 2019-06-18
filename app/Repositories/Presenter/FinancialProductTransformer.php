@@ -11,6 +11,7 @@ class FinancialProductTransformer extends TransformerAbstract
         return [
             'id' => $financial_product->id,
             'name' => $financial_product->name,
+            'auth_file_name' => $financial_product->auth_file_name,
             'category_name' => $financial_product->financial_category->name,
             'content' => $financial_product->content,
         ];

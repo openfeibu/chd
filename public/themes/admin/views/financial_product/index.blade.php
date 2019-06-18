@@ -40,6 +40,7 @@
                 ,{field:'id',title:'ID', width:80, sort: true}
                 ,{field:'category_name',title:"{{ trans('financial_product.label.category_name') }}"}
                 ,{field:'name',title:"{{ trans('financial_product.label.name') }}",edit:'text'}
+                ,{field:'auth_file_name',title:"{{ trans('financial_product.label.auth_file_name') }}",edit:'text'}
                 ,{field:'content',title:"{{ trans('financial_product.label.content') }}",edit:'text'}
                 ,{field:'score',title:'操作', width:150, align: 'right',toolbar:'#barDemo'}
             ]]

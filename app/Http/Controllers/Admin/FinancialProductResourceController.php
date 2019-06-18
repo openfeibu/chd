@@ -59,7 +59,10 @@ class FinancialProductResourceController extends BaseController
     {
         try {
             $attributes = $request->all();
-
+            if(isset($attributes['auth_file']))
+            {
+                $attributes['auth_file'] = implode(',',$attributes['auth_file']);
+            }
             $financial_product = $this->repository->create($attributes);
 
             return $this->response->message(trans('messages.success.created', ['Module' => trans('financial_product.name')]))
@@ -92,7 +95,10 @@ class FinancialProductResourceController extends BaseController
     {
         try {
             $attributes = $request->all();
-
+            if(isset($attributes['auth_file']))
+            {
+                $attributes['auth_file'] = implode(',',$attributes['auth_file']);
+            }
             $financial_product->update($attributes);
 
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('financial_product.name')]))
