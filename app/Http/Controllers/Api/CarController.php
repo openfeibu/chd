@@ -104,6 +104,7 @@ class CarController extends BaseController
        // $car->name = $car->brand_name.' '.$car->name;
         $car->configure = $car->configure ? array_values(json_decode($car->configure,true)) : [];
         $car->images =  explode(',',$car->image);
+        $car->images = array_filter($car->images);
         if($car->images)
         {
             $car->image = $car->images[0];
@@ -144,7 +145,7 @@ class CarController extends BaseController
             }else{
                 $cars_data[$key]['image'] = $car['displaying'];
             }
-            $cars_data[$key]['image'] = handle_image_url($car['image']);
+            $cars_data[$key]['image'] = handle_image_url($cars_data[$key]['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
         }
         return response()->json([
@@ -172,7 +173,7 @@ class CarController extends BaseController
             }else{
                 $cars_data[$key]['image'] = $car['displaying'];
             }
-            $cars_data[$key]['image'] = handle_image_url($car['image']);
+            $cars_data[$key]['image'] = handle_image_url($cars_data[$key]['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
         }
         return response()->json([
@@ -202,7 +203,7 @@ class CarController extends BaseController
                 $cars_data[$key]['image'] = $car['displaying'];
             }
 
-            $cars_data[$key]['image'] = handle_image_url($car['image']);
+            $cars_data[$key]['image'] = handle_image_url($cars_data[$key]['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
         }
         return response()->json([
