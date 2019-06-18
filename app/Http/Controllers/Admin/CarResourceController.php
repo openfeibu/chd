@@ -33,13 +33,26 @@ class CarResourceController extends BaseController
 
         $search = $request->input('search',[]);
         $search_name = isset($search['search_name']) ? $search['search_name'] : '';
-
+        $category = isset($search['category']) ? $search['category'] : '';
+        $recommend_type = isset($search['recommend_type']) ? $search['recommend_type'] : '';
         if ($this->response->typeIs('json')) {
             $data = $this->repository;
             if(!empty($search_name))
             {
                 $data = $data->where(function ($query) use ($search_name){
                     return $query->where('name','like','%'.$search_name.'%');
+                });
+            }
+            if(!empty($category))
+            {
+                $data = $data->where(function ($query) use ($category){
+                    return $query->whereRaw("find_in_set('".$category."',category)");
+                });
+            }
+            if(!empty($recommend_type))
+            {
+                $data = $data->where(function ($query) use ($recommend_type){
+                    return $query->whereRaw("find_in_set('".$recommend_type."',recommend_type)");
                 });
             }
             $data = $data->setPresenter(\App\Repositories\Presenter\CarPresenter::class)

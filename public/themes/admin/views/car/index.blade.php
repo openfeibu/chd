@@ -7,15 +7,39 @@
     </div>
     <div class="main_full">
         <div class="layui-col-md12">
-            <div class="tabel-message">
+            <div class="tabel-message layui-form">
                 <div class="layui-inline tabel-btn">
                     <button class="layui-btn layui-btn-warm "><a href="{{ guard_url('car/create') }}">添加{{ trans('car.name') }}</a></button>
                     <button class="layui-btn layui-btn-primary " data-type="del" data-events="del">删除</button>
                 </div>
                 <div class="layui-inline">
+                    <label class="layui-form-label">分类</label>
+                    <div class="layui-input-block">
+                        <select name="category" class="search_key">
+                            <option value="">全部</option>
+                            <option value="full">全款购车</option>
+                            <option value="instalment">金融分期</option>
+                            <option value="rent">以租代售</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">首页推荐</label>
+                    <div class="layui-input-block">
+                        <select name="recommend_type" class="search_key">
+                            <option value="">全部</option>
+                            <option value="new">新车上架</option>
+                            <option value="hot">为你推荐</option>
+                            <option value="rent">以租代售</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
                     <input class="layui-input search_key" name="search_name" id="demoReload" placeholder="车名" autocomplete="off">
                 </div>
-                <button class="layui-btn" data-type="reload">搜索</button>
+                <div class="layui-inline">
+                    <button class="layui-btn" data-type="reload">搜索</button>
+                </div>
             </div>
 
             <table id="fb-table" class="layui-table"  lay-filter="fb-table">
