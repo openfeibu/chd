@@ -58,7 +58,8 @@ class HomeController extends BaseController
         foreach ($auth_files as $key => $auth_file)
         {
             $data[] =[
-                'name' =>  $financial_product->auth_file_name.'模板'.$i,
+               // 'name' =>  $financial_product->auth_file_name.'模板'.$i,
+                'name' => '模板'.$i,
                 'image' => url('image/original'.$auth_file)
             ];
             $i++;
