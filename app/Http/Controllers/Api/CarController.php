@@ -75,13 +75,15 @@ class CarController extends BaseController
             //$cars_data[$key]['configure'] = json_decode($car['configure']);
             //$cars_data[$key]['name'] = $car['brand_name'].' '.$car['name'];
             $cars_data[$key]['images'] = explode(',',$car['image']);
+            $cars_data[$key]['images'] = array_filter($cars_data[$key]['images']);
             if($cars_data[$key]['images'])
             {
                 $cars_data[$key]['image'] = $cars_data[$key]['images'][0];
             }else{
                 $cars_data[$key]['image'] = $car['displaying'];
             }
-            $cars_data[$key]['image'] = handle_image_url($car['image']);
+
+            $cars_data[$key]['image'] = handle_image_url($cars_data[$key]['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
         }
 
@@ -135,6 +137,7 @@ class CarController extends BaseController
         foreach ($cars_data as $key => $car)
         {
             $cars_data[$key]['images'] = explode(',',$car['image']);
+            $cars_data[$key]['images'] = array_filter($cars_data[$key]['images']);
             if($cars_data[$key]['images'])
             {
                 $cars_data[$key]['image'] = $cars_data[$key]['images'][0];
@@ -162,6 +165,7 @@ class CarController extends BaseController
         foreach ($cars_data as $key => $car)
         {
             $cars_data[$key]['images'] = explode(',',$car['image']);
+            $cars_data[$key]['images'] = array_filter($cars_data[$key]['images']);
             if($cars_data[$key]['images'])
             {
                 $cars_data[$key]['image'] = $cars_data[$key]['images'][0];
@@ -190,12 +194,14 @@ class CarController extends BaseController
         foreach ($cars_data as $key => $car)
         {
             $cars_data[$key]['images'] = explode(',',$car['image']);
+            $cars_data[$key]['images'] = array_filter($cars_data[$key]['images']);
             if($cars_data[$key]['images'])
             {
                 $cars_data[$key]['image'] = $cars_data[$key]['images'][0];
             }else{
                 $cars_data[$key]['image'] = $car['displaying'];
             }
+
             $cars_data[$key]['image'] = handle_image_url($car['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
         }
