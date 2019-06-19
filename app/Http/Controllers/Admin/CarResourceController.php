@@ -131,7 +131,7 @@ class CarResourceController extends BaseController
                         'down' => $rent_financial_product_down,
                         'ratio' => $attributes['rent_financial_product_ratio_'.$rent_financial_product_id][$k],
                         'month_installment' => $attributes['rent_financial_product_month_installment_'.$rent_financial_product_id][$k],
-                        'periods' => $attributes['instalment_financial_product_periods_'.$rent_financial_product_id][$k],
+                        'periods' => $attributes['rent_financial_product_periods_'.$rent_financial_product_id][$k],
                     ]);
                 }
             }

@@ -155,11 +155,11 @@
                         @endforeach
                     </div>
                     <div class="layui-form-item" id="rent" style="display:none;">
-                            @foreach($rent_financial_products as $key => $product)
-                                <input type="hidden" name="rent_financial_product_id[]" value="{{ $product->id }}">
-                                <fieldset class="layui-elem-field" >
-                                    <legend>{{ $product->name }}</legend>
-
+                        @foreach($rent_financial_products as $key => $product)
+                            <input type="hidden" name="rent_financial_product_id[]" value="{{ $product->id }}">
+                            <fieldset class="layui-elem-field" product-id="{{ $product->id }}">
+                                <legend>{{ $product->name }}</legend>
+                                <div class="financial_product financial_product_{{ $product->id }}" product-id="{{ $product->id }}">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">首付：</label>
                                         <div class="layui-input-inline">
@@ -181,15 +181,22 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">期数：</label>
                                         <div class="layui-input-inline">
-                                            <select name="instalment_financial_product_periods_{{ $product->id }}[]">
+                                            <select name="rent_financial_product_periods_{{ $product->id }}[]">
                                                 @foreach(config('common.periods') as $key => $periods)
                                                     <option value="{{ $periods }}" >{{ $periods }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                </fieldset>
-                            @endforeach
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-inline">
+                                        <i class="handle_count add layui-icon layui-icon-add-circle-fine"></i>
+                                        <i class="handle_count delete layui-icon layui-icon-close-fill"></i>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        @endforeach
                     </div>
 
 
