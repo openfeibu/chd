@@ -28,6 +28,48 @@
                             <input type="text" name="name" autocomplete="off" placeholder="请输入{{ trans('car.label.name') }}" class="layui-input" value="{{ $car->name }}">
                         </div>
                     </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">外观</label>
+                        <div class="layui-input-block label_content" type="1">
+                            <div class="label-selected">
+                                @foreach($car_shade_colors as $key => $color)
+                                    <li data="{{ $color['name'] }}">x  {{ $color['name'] }}</li>
+                                @endforeach
+                                <input type="text" name="labelName" class="labelName" placeholder="输入颜色，回车键确认输入">
+                                <input type="hidden" name="shade_color" class="label" value="{{ $car_shade_color_names }}">
+                            </div>
+                            <div class="layui-col-md12" id="labelItem">
+                                <!--标签库-->
+                                <div class="label-item shade-color-item">
+                                    @foreach($brand_shade_colors as $key => $color)
+                                        <li data="{{ $color['name'] }}" @if(in_array($color['name'],$car_shade_color_name_arr)) class="selected" @endif><span>{{ $color['name'] }}</span></li>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内饰</label>
+                        <div class="layui-input-block label_content" type="2">
+                            <div class="label-selected">
+                                @foreach($car_interior_colors as $key => $color)
+                                    <li data="{{ $color['name'] }}">x  {{ $color['name'] }}</li>
+                                @endforeach
+                                <input type="text" name="labelName" class="labelName" placeholder="输入颜色，回车键确认输入">
+                                <input type="hidden" name="interior_color" class="label" value="{{ $car_interior_color_names }}">
+                            </div>
+                            <div class="layui-col-md12" id="labelItem">
+                                <!--标签库-->
+                                <div class="label-item interior-color-item">
+                                    @foreach($brand_interior_colors as $key => $color)
+                                        <li data="{{ $color['name'] }}" @if(in_array($color['name'],$car_interior_color_name_arr)) class="selected" @endif><span>{{ $color['name'] }}</span></li>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.price') }}</label>
                         <div class="layui-input-inline">
@@ -312,6 +354,77 @@
             }
             form.render();
         })
+        $(".labelName").bind('keypress',function(event){
+            var parent = $(this).parents(".label_content");
+            if (event.keyCode == 13) {
+                var text = $(this).val();
+                if (text.length == 0) {
+                    return false;
+                }
+                var labelHTML = "<li data='" + text + "''>x " + text + "</li>";
+                parent.find(".label-selected").prepend(labelHTML);
+                val = '';
+                for (var i = 0; i < parent.find(".label-selected").children("li").length; i++) {
+                    val += parent.find(".label-selected").children("li").eq(i).attr("data") + ',';
+                }
+                parent.find(".label").val(val);
+                $(this).val("")
+                return false;
+            }
+
+        });
+        $(".label-item").on("click", "li", function() {
+            var parent = $(this).parents(".label_content");
+            var id = $(this).attr("data");
+            var text = $(this).children("span").html();
+            var labelHTML = "<li data='" + text + "'>x " + text + "</li>";
+            if ($(this).hasClass("selected")) {
+                return false;
+            }
+            parent.find(".label-selected").prepend(labelHTML);
+            val = '';
+            for (var i = 0; i < parent.find(".label-selected").children("li").length; i++) {
+                val += parent.find(".label-selected").children("li").eq(i).attr("data") + ',';
+            }
+            parent.find(".label").val(val);
+            $(this).addClass("selected");
+        });
+        var val = "";
+        $(".label-selected").on("click", "li", function() {
+            var that = $(this);
+            var parent = that.parents(".label_content");
+            var color_name = that.attr("data")
+            var type = parent.attr('type');
+            layer.confirm('是否删除？',{title:'提示'},function(index){
+                layer.close(index);
+
+                var load = layer.load();
+                $.ajax({
+                    url : "{{ guard_url('car/destroyCarColor') }}",
+                    data :  {'color_name':color_name,'car_id':"{{ $car['id'] }}",'type':type,'_token' : "{!! csrf_token() !!}"},
+                    type : 'POST',
+                    success : function (data) {
+                        layer.close(load);
+
+                        var id = that.attr("data");
+                        val = '';
+                        that.remove();
+                        for (var i = 0; i < that.children("li").length; i++) {
+                            val += that.children("li").eq(i).attr("data") + ',';
+                        }
+                        parent.find("input[name='label']").val(val);
+                        parent.find(".label-item").find("li[data='" + id + "']").removeClass("selected");
+                    },
+                    error : function (jqXHR, textStatus, errorThrown) {
+                        layer.close(load);
+                        layer.msg('服务器出错');
+                    }
+                });
+
+
+            });
+
+        });
 
     });
 </script>

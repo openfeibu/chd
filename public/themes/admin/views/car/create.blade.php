@@ -15,10 +15,11 @@
                         <label class="layui-form-label">{{ trans('brand.name') }}</label>
 
                         <div class="layui-input-inline">
-                            <select name="type" lay-search>
-                            @foreach($brands as $key => $brand)
-                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                            @endforeach
+                            <select name="type" lay-search lay-filter="brand_id" lay-verify="required" >
+                                <option value="0">请选择品牌</option>
+                                @foreach($brands as $key => $brand)
+                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -26,19 +27,49 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.name') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="name" autocomplete="off" placeholder="请输入{{ trans('car.label.name') }}" class="layui-input" value="{{ $car->name }}">
+                            <input type="text" name="name" autocomplete="off" placeholder="请输入{{ trans('car.label.name') }}" class="layui-input" value="{{ $car->name }}" lay-verify="required">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">外观</label>
+                        <div class="layui-input-block label_content">
+                            <div class="label-selected">
+                                <input type="text" name="labelName" class="labelName" placeholder="输入颜色，回车键确认输入">
+                                <input type="hidden" name="shade_color" class="label">
+                            </div>
+                            <div class="layui-col-md12" id="labelItem">
+                                <!--标签库-->
+                                <div class="label-item shade-color-item">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内饰</label>
+                        <div class="layui-input-block label_content">
+                            <div class="label-selected">
+                                <input type="text" name="labelName" class="labelName" placeholder="输入颜色，回车键确认输入">
+                                <input type="hidden" name="interior_color" class="label">
+                            </div>
+                            <div class="layui-col-md12" id="labelItem">
+                                <!--标签库-->
+                                <div class="label-item interior-color-item">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.price') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="price" autocomplete="off" placeholder="请输入{{ trans('car.label.price') }}" class="layui-input" value="{{ $car->price }}">
+                            <input type="text" name="price" autocomplete="off" placeholder="请输入{{ trans('car.label.price') }}" class="layui-input" value="{{ $car->price }}" lay-verify="required">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{ trans('car.label.selling_price') }}</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="selling_price" autocomplete="off" placeholder="请输入{{ trans('car.label.selling_price') }}" class="layui-input" value="{{ $car->selling_price }}">
+                            <input type="text" name="selling_price" autocomplete="off" placeholder="请输入{{ trans('car.label.selling_price') }}" class="layui-input" value="{{ $car->selling_price }}" lay-verify="required">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -259,7 +290,37 @@
             }
             form.render();
         });
-
+        form.on('select(brand_id)', function(data){
+            if(data.value)
+            {
+                var load = layer.load();
+                var shade_html = "";
+                var interior_html = "";
+                $.ajax({
+                    url : "{{ guard_url('brandColors') }}",
+                    data : {'brand_id':data.value,'_token':"{!! csrf_token() !!}"},
+                    type : 'get',
+                    success : function (data) {
+                        layer.close(load);
+                        var brand_shade_colors = data.data.brand_shade_colors;
+                        $.each(brand_shade_colors, function(i, val) {
+                            shade_html += "<li data='"+val.name+"'><span>"+val.name+"</span></li>";
+                        });
+                        $(".shade-color-item").html(shade_html);
+                        var brand_interior_colors = data.data.brand_interior_colors;
+                        $.each(brand_interior_colors, function(i, val) {
+                            interior_html += "<li data='"+val.name+"'><span>"+val.name+"</span></li>";
+                        });
+                        $(".interior-color-item").html(interior_html);
+                    },
+                    error : function (jqXHR, textStatus, errorThrown) {
+                        layer.close(load);
+                        layer.msg('服务器出错');
+                    }
+                });
+            }
+            form.render();
+        });
         $(".handle_count").click(function(){
             var product_id = $(this).parents("fieldset").attr('product-id');
             var count = $(".financial_product_"+product_id).length;
@@ -278,5 +339,53 @@
             }
             form.render();
         });
+        $(".labelName").bind('keypress',function(event){
+            var parent = $(this).parents(".label_content");
+            if (event.keyCode == 13) {
+                var text = $(this).val();
+                if (text.length == 0) {
+                    return false;
+                }
+                var labelHTML = "<li data='" + text + "''>x " + text + "</li>";
+                parent.find(".label-selected").prepend(labelHTML);
+                val = '';
+                for (var i = 0; i < parent.find(".label-selected").children("li").length; i++) {
+                    val += parent.find(".label-selected").children("li").eq(i).attr("data") + ',';
+                }
+                parent.find(".label").val(val);
+                $(this).val("")
+                return false;
+            }
+
+        });
+        $(".label-item").on("click", "li", function() {
+            var parent = $(this).parents(".label_content");
+            var id = $(this).attr("data");
+            var text = $(this).children("span").html();
+            var labelHTML = "<li data='" + text + "'>x " + text + "</li>";
+            if ($(this).hasClass("selected")) {
+                return false;
+            }
+            parent.find(".label-selected").prepend(labelHTML);
+            val = '';
+            for (var i = 0; i < parent.find(".label-selected").children("li").length; i++) {
+                val += parent.find(".label-selected").children("li").eq(i).attr("data") + ',';
+            }
+            parent.find(".label").val(val);
+            $(this).addClass("selected");
+        });
+        var val = "";
+        $(".label-selected").on("click", "li", function() {
+            var parent = $(this).parents(".label_content");
+            var id = $(this).attr("data");
+            val = '';
+            $(this).remove();
+            for (var i = 0; i < $(this).children("li").length; i++) {
+                val += $(this).children("li").eq(i).attr("data") + ',';
+            }
+            parent.find("input[name='label']").val(val);
+            parent.find(".label-item").find("li[data='" + id + "']").removeClass("selected");
+        });
+
     });
 </script>
