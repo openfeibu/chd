@@ -47,4 +47,24 @@ return [
             'order'  => 'like'
         ],
     ],
+    'car_color'     => [
+        'model'        => 'App\Models\CarColor',
+        'table'        => 'car_colors',
+        'primaryKey'   => 'id',
+        'hidden'       => [],
+        'visible'      => [],
+        'guarded'      => ['*'],
+        'dates'        => ['deleted_at'],
+        'fillable'     => ['name','type','brand_id','car_id','displaying','order'],
+        'translate'    => ['name','type','brand_id','car_id','displaying','order'],
+        'upload_folder' => '/page/page',
+        'encrypt'      => ['id'],
+        'revision'     => ['name'],
+        'perPage'      => '20',
+        'search'        => [
+            'name'  => 'like',
+            'url'  => 'like',
+            'order'  => 'like'
+        ],
+    ],
 ];

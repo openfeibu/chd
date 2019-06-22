@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\ResourceController as BaseController;
+use App\Models\CarColor;
 use App\Models\CarFinancialProduct;
 use App\Models\FinancialProduct;
 use App\Repositories\Eloquent\BrandRepositoryInterface;
@@ -106,6 +107,34 @@ class CarResourceController extends BaseController
                 'category' => isset($attributes['category']) ? $attributes['category'] : '',
                 'recommend_type' => isset($attributes['recommend_type']) ? implode(',',$attributes['recommend_type']) : ''
             ]);
+
+            $shade_colors = $attributes['shade_color'] ? explode(',',$attributes['shade_color']) : [];
+            $interior_colors = $attributes['interior_color'] ? explode(',',$attributes['interior_color']) : [];
+
+            $shade_colors = array_unique(array_filter($shade_colors));
+            $interior_colors = array_unique(array_filter($interior_colors));
+
+            $car_colors = [];
+            foreach ($shade_colors as $key => $val)
+            {
+                $car_colors[] = [
+                    'car_id' => $car->id,
+                    'brand_id' => $car->type,
+                    'name' => trim($val),
+                    'type' => 1
+                ];
+            }
+            foreach ($interior_colors as $key => $val)
+            {
+                $car_colors[] = [
+                    'car_id' => $car->id,
+                    'brand_id' => $car->type,
+                    'name' => trim($val),
+                    'type' => 2
+                ];
+            }
+            CarColor::insert($car_colors);
+
             $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
             foreach ($instalment_financial_product_ids as $key =>  $instalment_financial_product_id)
             {
@@ -253,8 +282,25 @@ class CarResourceController extends BaseController
             }
 
         }
+
+        $car_shade_colors = CarColor::where('car_id',$car['id'])->where('type',1)->get()->toArray();
+        $car_interior_colors = CarColor::where('car_id',$car['id'])->where('type',2)->get()->toArray();
+
+        $car_shade_color_name_arr = array_column($car_shade_colors,'name');
+        $car_interior_color_name_arr = array_column($car_interior_colors,'name');
+        $car_shade_color_names = $car_shade_colors ? implode(',',$car_shade_color_name_arr) : '';
+        $car_interior_color_names = $car_interior_colors ? implode(',',$car_interior_color_name_arr) : '';
+
+        $brand_id = $car['type'];
+        $all_sub_ids = app(Brand::class)->getSubIds($brand_id);
+        array_push($all_sub_ids,$brand_id);
+
+        $brand_shade_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',1)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get()->toArray();
+
+        $brand_interior_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',2)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get()->toArray();
+
         return $this->response->title(trans('app.view') . ' ' . trans('car.name'))
-            ->data(compact('car','brands','instalment_financial_products','rent_financial_products','instalment_financial_product_arr','rent_financial_product_arr'))
+            ->data(compact('car','brands','instalment_financial_products','rent_financial_products','instalment_financial_product_arr','rent_financial_product_arr','car_shade_colors','car_interior_colors','car_shade_color_names','car_interior_color_names','brand_shade_colors','brand_interior_colors','car_shade_color_name_arr','car_interior_color_name_arr'))
             ->view($view)
             ->output();
     }
@@ -283,6 +329,44 @@ class CarResourceController extends BaseController
                 'category' => isset($attributes['category']) ? $attributes['category'] : '',
                 'recommend_type' => isset($attributes['recommend_type']) ? implode(',',$attributes['recommend_type']) : ''
             ]);
+
+            $shade_colors = $attributes['shade_color'] ? explode(',',$attributes['shade_color']) : [];
+            $interior_colors = $attributes['interior_color'] ? explode(',',$attributes['interior_color']) : [];
+
+            $shade_colors = array_unique(array_filter($shade_colors));
+            $interior_colors = array_unique(array_filter($interior_colors));
+
+            $car_colors = [];
+            foreach ($shade_colors as $key => $val)
+            {
+                $exist = CarColor::where('car_id',$car['id'])->where('name',trim($val))->where('type',1)->first();
+                if(!$exist)
+                {
+                    $car_colors[] = [
+                        'car_id' => $car->id,
+                        'brand_id' => $car->type,
+                        'name' => trim($val),
+                        'type' => 1
+                    ];
+                }
+
+            }
+            foreach ($interior_colors as $key => $val)
+            {
+                $exist = CarColor::where('car_id',$car['id'])->where('name',trim($val))->where('type',2)->first();
+                if(!$exist)
+                {
+                    $car_colors[] = [
+                        'car_id' => $car->id,
+                        'brand_id' => $car->type,
+                        'name' => trim($val),
+                        'type' => 2
+                    ];
+                }
+
+            }
+            CarColor::insert($car_colors);
+
             if(strpos($attributes['category'],'instalment') !==false)
             {
                 $instalment_financial_product_ids = $attributes['instalment_financial_product_id'];
@@ -385,6 +469,7 @@ class CarResourceController extends BaseController
                 }
             }
             */
+
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('car.name')]))
                 ->code(0)
                 ->status('success')
@@ -478,5 +563,44 @@ class CarResourceController extends BaseController
                 ->url(guard_url('car'))
                 ->redirect();
         }
+    }
+    public function destroyCarColor(Request $request)
+    {
+        try {
+            $car_id = $request->car_id;
+            $color_name = $request->color_name;
+            $type = $request->type;
+            CarColor::where('car_id',$car_id)->where('name',$color_name)->where('type',$type)->delete();
+
+            return $this->response->message(trans('messages.success.deleted', ['Module' => '']))
+                ->status("success")
+                ->code(200)
+                ->url(guard_url('car'))
+                ->redirect();
+
+        } catch (Exception $e) {
+            return $this->response->message($e->getMessage())
+                ->status("error")
+                ->code(400)
+                ->url(guard_url('car'))
+                ->redirect();
+        }
+    }
+    public function brandColors(Request $request)
+    {
+        $brand_id = $request->brand_id;
+        $all_sub_ids = app(Brand::class)->getSubIds($brand_id);
+        array_push($all_sub_ids,$brand_id);
+
+        $brand_shade_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',1)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get()->toArray();
+
+        $brand_interior_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',2)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get()->toArray();
+
+        return $this->response->message('')
+            ->data(compact('brand_shade_colors','brand_interior_colors'))
+            ->status("success")
+            ->code(200)
+            ->url(guard_url('car'))
+            ->redirect();
     }
 }

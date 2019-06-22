@@ -31,6 +31,8 @@ Route::group([
     Route::post('/car/destroyAll', 'CarResourceController@destroyAll')->name('car.destroy_all');
     Route::put('/car/updateField/{car}', 'CarResourceController@updateField')->name('car.update_field');
     Route::post('/car/destroyCarFinancial', 'CarResourceController@destroyCarFinancial')->name('car.destroy_car_financial');
+    Route::post('/car/destroyCarColor', 'CarResourceController@destroyCarColor')->name('car.destroy_car_color');
+    Route::get('brandColors', 'CarResourceController@brandColors')->name('car.brand_colors');
 
     Route::resource('brand', 'BrandResourceController');
     Route::post('/brand/destroyAll', 'BrandResourceController@destroyAll')->name('brand.destroy_all');
