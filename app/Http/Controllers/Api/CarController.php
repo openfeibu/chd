@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\CarColor;
 use App\Repositories\Eloquent\PageRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
@@ -33,14 +34,21 @@ class CarController extends BaseController
             ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.year','cars.image','cars.selling_price','cars.category');
         if($brand_color_name)
         {
-            $all_sub_ids = BrandColor::where('type',1)
+            $color_brand_ids = BrandColor::where('type',1)
                 ->where('name',$brand_color_name)
                 ->whereIn('brand_id',$all_sub_ids)
                 ->pluck('brand_id');
             $cars = Car::join('brands','brands.id','=','cars.type')
-                ->join('brand_colors','brand_colors.brand_id','=','brands.id')
+                ->leftjoin('brand_colors','brand_colors.brand_id','=','brands.id')
+                ->leftjoin('car_colors','car_colors.car_id','=','cars.id')
                 ->select('brands.id as brand_id','brands.name as brand_name','brand_colors.displaying as image','cars.id','cars.name','cars.price','cars.year','cars.selling_price','cars.category')
-                ->where('brand_colors.name',$brand_color_name);
+                ->where(function($query) use ($color_brand_ids,$brand_color_name){
+                    return $query->where(function($query) use ($color_brand_ids){
+                        $query->whereIn('cars.type', $color_brand_ids);
+                    })->orWhere(function($query) use ($brand_color_name){
+                        $query->where('car_colors.name', $brand_color_name);
+                    });
+                });
         }
 
         $cars = $cars->when($all_sub_ids, function ($query) use ($all_sub_ids) {
@@ -80,7 +88,7 @@ class CarController extends BaseController
             {
                 $cars_data[$key]['image'] = $cars_data[$key]['images'][0];
             }else{
-                $cars_data[$key]['image'] = $car['displaying'];
+                $cars_data[$key]['image'] = isset($car['displaying']) ? $car['displaying'] : '';
             }
 
             $cars_data[$key]['image'] = handle_image_url($cars_data[$key]['image']);
@@ -143,7 +151,7 @@ class CarController extends BaseController
             {
                 $cars_data[$key]['image'] = $cars_data[$key]['images'][0];
             }else{
-                $cars_data[$key]['image'] = $car['displaying'];
+                $cars_data[$key]['image'] = isset($car['displaying']) ? $car['displaying'] : '';
             }
             $cars_data[$key]['image'] = handle_image_url($cars_data[$key]['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
@@ -171,7 +179,7 @@ class CarController extends BaseController
             {
                 $cars_data[$key]['image'] = $cars_data[$key]['images'][0];
             }else{
-                $cars_data[$key]['image'] = $car['displaying'];
+                $cars_data[$key]['image'] = isset($car['displaying']) ? $car['displaying'] : '';
             }
             $cars_data[$key]['image'] = handle_image_url($cars_data[$key]['image']);
             $cars_data[$key]['financial'] = CarFinancialProduct::getCarFirstFinancial($car['id']);
@@ -200,7 +208,7 @@ class CarController extends BaseController
             {
                 $cars_data[$key]['image'] = $cars_data[$key]['images'][0];
             }else{
-                $cars_data[$key]['image'] = $car['displaying'];
+                $cars_data[$key]['image'] = isset($car['displaying']) ? $car['displaying'] : '';
             }
 
             $cars_data[$key]['image'] = handle_image_url($cars_data[$key]['image']);
@@ -212,4 +220,41 @@ class CarController extends BaseController
         ]);
 
     }
+    public function getCarColors(Request $request)
+    {
+        $car_id = $request->car_id;
+        $car = Car::where('id',$car_id)->first();
+        $brand_id = $car->type;
+        $car_shape_colors = CarColor::where('car_id',$car->id)->where('type',1)->groupBy('name')->orderBy('id','desc')->select('name')->get()->toArray();
+        $car_interior_colors = CarColor::where('car_id',$car->id)->where('type',2)->groupBy('name')->orderBy('id','desc')->select('name')->get()->toArray();
+        $all_colors = [];
+        if(count($car_shape_colors))
+        {
+            $shape_colors = $car_shape_colors;
+            $interior_colors = $car_interior_colors;
+
+        }else{
+            $all_sub_ids = app(Brand::class)->getSubIds($brand_id);
+            array_push($all_sub_ids,$brand_id);
+
+            $shape_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',1)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->select('name')->get()->toArray();
+
+            $interior_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',2)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->select('name')->get()->toArray();
+        }
+
+        foreach ($shape_colors as $key => $shape_color)
+        {
+            foreach ($interior_colors as $key => $interior_color)
+            {
+                $all_colors[] = [
+                    'name' => $shape_color['name'] . '/' . $interior_color['name'],
+                ];
+            }
+        }
+        return response()->json([
+            'code' => '200',
+            'data' => $all_colors,
+        ]);
+    }
+
 }

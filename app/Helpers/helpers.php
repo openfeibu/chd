@@ -788,19 +788,33 @@ if (!function_exists('check_gifcartoon')) {
         return true;
     }
 }
-function deposit($selling_price)
-{
-    if($selling_price <= 10)
+if (!function_exists('deposit')) {
+    function deposit($selling_price)
     {
-        $deposit = 2000;
-    }else if($selling_price>10 && $selling_price<=20)
-    {
-        $deposit = 3000;
-    }else if($selling_price>20 && $selling_price<=30)
-    {
-        $deposit = 5000;
-    }else{
-        $deposit = 20000;
+        if ($selling_price <= 10) {
+            $deposit = 2000;
+        } else if ($selling_price > 10 && $selling_price <= 20) {
+            $deposit = 3000;
+        } else if ($selling_price > 20 && $selling_price <= 30) {
+            $deposit = 5000;
+        } else {
+            $deposit = 20000;
+        }
+        return $deposit;
     }
-    return $deposit;
+}
+if (!function_exists('assoc_unique')) {
+    function assoc_unique($arr, $key)
+    {
+        $tmp_arr = array();
+        foreach ($arr as $k => $v) {
+            if (in_array($v[$key], $tmp_arr)) {
+                unset($arr[$k]);
+            } else {
+                $tmp_arr[] = $v[$key];
+            }
+        }
+        sort($arr);
+        return $arr;
+    }
 }

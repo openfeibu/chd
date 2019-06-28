@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\CarColor;
 use App\Repositories\Eloquent\PageRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
@@ -33,12 +34,16 @@ class BrandController extends BaseController
         array_push($all_sub_ids,$brand_id);
 
         $type = 1;
-        $brand_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',$type)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get();
+        $brand_colors = BrandColor::select('name')->where('type',$type)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get()->toArray();
 
-        $brand_colors = handle_array_images($brand_colors,'displaying');
+        $car_colors = CarColor::select('name')->where('type',$type)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get()->toArray();
+
+        $colors = array_merge($brand_colors,$car_colors);
+        $colors = assoc_unique($colors,'name');
+        //$brand_colors = handle_array_images($brand_colors,'displaying');
         return response()->json([
             'code' => '200',
-            'data' => $brand_colors,
+            'data' => $colors,
         ]);
     }
     public function getBrandInteriorColors(Request $request)
@@ -47,9 +52,9 @@ class BrandController extends BaseController
         $all_sub_ids = app(Brand::class)->getSubIds($brand_id);
         array_push($all_sub_ids,$brand_id);
 
-        $brand_shape_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',1)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get();
+        $brand_shape_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',1)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->select('name')->get();
 
-        $brand_interior_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',2)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->get();
+        $brand_interior_colors = BrandColor::select('id','brand_id','name','displaying')->where('type',2)->whereIn('brand_id',$all_sub_ids)->groupBy('name')->select('name')->get();
 
         $brand_all_colors = [];
         foreach ($brand_shape_colors as $key => $brand_shape_color)
