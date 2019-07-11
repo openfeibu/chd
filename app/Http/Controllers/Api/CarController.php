@@ -163,12 +163,11 @@ class CarController extends BaseController
     }
     public function getNewCars(Request $request)
     {
-        $limit = $request->input('limit',5);
         $cars = Car::join('brands','brands.id','=','cars.type')
             ->select('brands.id as brand_id','brands.name as brand_name','brands.displaying','cars.id','cars.name','cars.price','cars.selling_price','cars.image','cars.year','cars.category')
             ->whereRaw("find_in_set('new',recommend_type)")
             ->orderBy('id','desc')
-            ->limit($limit)
+            ->limit(5)
             ->get();
         $cars_data = $cars->toArray();
         foreach ($cars_data as $key => $car)
